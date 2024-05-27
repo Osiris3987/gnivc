@@ -1,0 +1,31 @@
+spring:
+  boot:
+    admin:
+      context-path:admin
+  application:
+    name: gateway-service
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          jwk-set-uri: http://localhost:8080/realms/GatewayRealm/protocol/openid-connect/certs
+  cloud:
+    gateway:
+      routes:
+        - id: auth
+          uri: http://localhost:8080
+          predicates:
+            - Path=/openid-connect/**
+          filters:
+            - RewritePath=/openid-connect,/realms/GatewayRealm/protocol/openid-connect
+      default-filters:
+        - DedupeResponseHeader=Access-Control-Allow-Origin, RETAIN_LAST
+        - AddResponseHeader=AccessControl-Allow-Origin, *
+server:
+  port: 8081
+eureka:
+  client:
+    service-url:
+      defaultZone:
+        http://localhost:8761/eureka
+
