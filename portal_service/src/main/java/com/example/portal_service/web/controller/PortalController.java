@@ -1,6 +1,6 @@
 package com.example.portal_service.web.controller;
 
-import com.example.portal_service.interceptor.UserContext;
+import com.example.portal_service.interceptor.UserContext1;
 import com.example.portal_service.model.user.User;
 import com.example.portal_service.service.DaDataService;
 import com.example.portal_service.service.KeycloakService;
@@ -17,13 +17,12 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/users")
 public class PortalController {
-    private final UserContext userContext;
+    private final UserContext1 userContext;
     private final UserService userService;
     private final DaDataService daDataService;
     private final UserMapper userMapper;

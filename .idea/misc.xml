@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="MavenProjectsManager">
+    <option name="originalFiles">
+      <list>
+        <option value="$PROJECT_DIR$/dwh_service/pom.xml" />
+        <option value="$PROJECT_DIR$/logist_sevice/pom.xml" />
+        <option value="$PROJECT_DIR$/driver_service/pom.xml" />
+        <option value="$PROJECT_DIR$/portal_service/pom.xml" />
+        <option value="$PROJECT_DIR$/gateway_service_gnivc/pom.xml" />
+        <option value="$PROJECT_DIR$/discovery_service_gnivc/pom.xml" />
+        <option value="$PROJECT_DIR$/custom_spring_boot_starter/pom.xml" />
+      </list>
+    </option>
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_19" default="true" project-jdk-name="19" project-jdk-type="JavaSDK" />
+</project>

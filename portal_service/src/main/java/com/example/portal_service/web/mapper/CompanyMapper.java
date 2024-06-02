@@ -10,10 +10,10 @@ import java.util.List;
 
 @Mapper(componentModel = "spring")
 public abstract class CompanyMapper {
-    @Mapping(source = "company.id", target = "id")
+    //@Mapping(source = "company.id", target = "id")
     public abstract CompanyWithUsersResponse toCompanyWithUsersResponse(Company company);
 
-    @Mapping(source = "company.id", target = "id")
+    //@Mapping(source = "company.id", target = "id")
     public abstract CompanyResponse toCompanyResponse(Company company);
 
     public abstract List<CompanyResponse> toCompanyResponse(List<Company> companies);

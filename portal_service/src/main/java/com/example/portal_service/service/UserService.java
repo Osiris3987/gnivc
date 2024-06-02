@@ -1,9 +1,8 @@
 package com.example.portal_service.service;
 
-import com.example.portal_service.interceptor.UserContext;
+import com.example.portal_service.interceptor.UserContext1;
 import com.example.portal_service.model.user.User;
 import com.example.portal_service.repository.UserRepository;
-import jakarta.annotation.PostConstruct;
 import jakarta.ws.rs.core.Response;
 import lombok.RequiredArgsConstructor;
 import org.keycloak.admin.client.CreatedResponseUtil;
@@ -25,7 +24,7 @@ public class UserService {
     private final UserRepository userRepository;
     private final MailService mailService;
     private final KeycloakService keycloakService;
-    private final UserContext userContext;
+    private final UserContext1 userContext;
     private CompanyService companyService;
 
     @Autowired

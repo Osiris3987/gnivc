@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="Encoding">
+    <file url="file://$PROJECT_DIR$/custom_spring_boot_starter/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/custom_spring_boot_starter/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/discovery_service_gnivc/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/discovery_service_gnivc/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/driver_service/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/driver_service/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/dwh_service/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/dwh_service/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/gateway_service_gnivc/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/gateway_service_gnivc/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/logist_sevice/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/logist_sevice/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/portal_service/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/portal_service/src/main/resources" charset="UTF-8" />
+  </component>
+</project>

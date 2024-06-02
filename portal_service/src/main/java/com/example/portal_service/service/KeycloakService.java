@@ -1,17 +1,15 @@
 package com.example.portal_service.service;
 
-import com.example.portal_service.interceptor.UserContext;
+import com.example.portal_service.interceptor.UserContext1;
 import com.example.portal_service.model.company.GenericCompanyRole;
 import lombok.RequiredArgsConstructor;
 import org.keycloak.admin.client.resource.RealmResource;
-import org.keycloak.admin.client.resource.UserResource;
 import org.keycloak.representations.idm.CredentialRepresentation;
 import org.keycloak.representations.idm.RoleRepresentation;
 import org.keycloak.representations.idm.UserRepresentation;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @Service
@@ -19,7 +17,7 @@ import java.util.stream.Collectors;
 public class KeycloakService {
 
     private final RealmResource realmResource;
-    private final UserContext userContext;
+    private final UserContext1 userContext;
 
     public void changePassword(String password) {
         UserRepresentation userRepresentation = getUserRepresentation(userContext.getUserId().toString());

@@ -1,6 +1,6 @@
 package com.example.portal_service.service;
 
-import com.example.portal_service.interceptor.UserContext;
+import com.example.portal_service.interceptor.UserContext1;
 import com.example.portal_service.model.company.Company;
 import com.example.portal_service.model.company.GenericCompanyRole;
 import com.example.portal_service.model.user.User;
@@ -25,7 +25,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class CompanyService {
     private final CompanyRepository companyRepository;
-    private final UserContext userContext;
+    private final UserContext1 userContext;
     private final DaDataService daDataService;
     private final UserService userService;
     private final Keycloak keycloak;

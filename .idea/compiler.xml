@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="dwh_service" />
+        <module name="gateway_service_gnivc" />
+        <module name="driver_service" />
+        <module name="portal_service" />
+        <module name="custom_spring_boot_starter" />
+        <module name="logist_sevice" />
+        <module name="discovery_service_gnivc" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="custom_spring_boot_starter" target="17" />
+      <module name="discovery_service_gnivc" target="17" />
+      <module name="driver_service" target="17" />
+      <module name="dwh_service" target="17" />
+      <module name="gateway_service_gnivc" target="17" />
+      <module name="logist_sevice" target="1.5" />
+      <module name="portal_service" target="17" />
+    </bytecodeTargetLevel>
+  </component>
+  <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="custom_spring_boot_starter" options="-parameters" />
+      <module name="discovery_service_gnivc" options="-parameters" />
+      <module name="driver_service" options="-parameters" />
+      <module name="dwh_service" options="-parameters" />
+      <module name="gateway_service_gnivc" options="-parameters" />
+      <module name="portal_service" options="-parameters" />
+    </option>
+  </component>
+</project>
