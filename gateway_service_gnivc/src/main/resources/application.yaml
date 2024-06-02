@@ -18,9 +18,18 @@ spring:
             - Path=/openid-connect/**
           filters:
             - RewritePath=/openid-connect,/realms/GatewayRealm/protocol/openid-connect
+        - id: portal
+          uri: http://localhost:8082
+          predicates:
+            - Path=/portal/**
+          filters:
+            - RewritePath=/portal,/api/v1
+
       default-filters:
         - DedupeResponseHeader=Access-Control-Allow-Origin, RETAIN_LAST
         - AddResponseHeader=AccessControl-Allow-Origin, *
+
+
 server:
   port: 8081
 eureka:
