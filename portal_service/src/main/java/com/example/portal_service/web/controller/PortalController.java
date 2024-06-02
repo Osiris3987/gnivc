@@ -16,6 +16,8 @@ import org.keycloak.representations.idm.UserRepresentation;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
 @RestController
 @RequiredArgsConstructor
@@ -58,5 +60,18 @@ public class PortalController {
     public DaDataJsomArrayResponse test3(@RequestBody DaDataRequest dto){
         return daDataService.sendPostRequest("http://suggestions.dadata.ru/suggestions/api/4_1/rs/findById/party",
                 dto);
+    }
+    @GetMapping("/getUsersWithRoles")
+    public Map<String, Long> getUsersWithRoles(@RequestParam String companyId) {
+        return userService.findUsersWithRoleCount(companyId);
+    }
+
+    @PostMapping("/updatePassword")
+    public void updatePassword(@RequestParam String password){
+        keycloakService.changePassword(password);
+    }
+    @GetMapping("/roles")
+    public List<String> getAllRoles() {
+        return keycloakService.getAllCompanyRoles();
     }
 }

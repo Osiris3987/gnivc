@@ -14,6 +14,7 @@ import org.keycloak.admin.client.resource.RealmResource;
 import org.keycloak.admin.client.resource.UserResource;
 import org.keycloak.representations.idm.RoleRepresentation;
 import org.keycloak.representations.idm.UserRepresentation;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -32,6 +33,14 @@ public class CompanyService {
 
     public Company findById(UUID id){
         return companyRepository.findById(id).orElseThrow();
+    }
+
+    public List<Company> findAll(int offset, int limit) {
+        return companyRepository.findAll(PageRequest.of(offset, limit)).getContent();
+    }
+
+    public Company findByName(String name) {
+        return companyRepository.findByName(name).orElseThrow();
     }
 
     public void createCompany(DaDataRequest dto) {
