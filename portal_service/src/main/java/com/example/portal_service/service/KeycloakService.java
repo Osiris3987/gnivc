@@ -3,6 +3,7 @@ package com.example.portal_service.service;
 
 import com.example.gnivc_spring_boot_starter.UserContext;
 import com.example.portal_service.model.company.GenericCompanyRole;
+import com.example.portal_service.model.exception.AccessDeniedException;
 import com.example.portal_service.util.CredentialPair;
 import jakarta.ws.rs.core.Response;
 import lombok.RequiredArgsConstructor;
@@ -30,9 +31,11 @@ public class KeycloakService {
         userRepresentation.setCredentials(List.of(generatePasswordRepresentation(password)));
         realmResource.users().get(userContext.getUserId().toString()).update(userRepresentation);
     }
-    public void updateUser(UserRepresentation userRepresentation) {
+    public UserRepresentation updateUser(UserRepresentation userRepresentation) {
+        UserRepresentation beforeUpdate = realmResource.users().get(userContext.getUserId().toString()).toRepresentation();
         userRepresentation.setId(userContext.getUserId().toString());
         realmResource.users().get(userRepresentation.getId()).update(userRepresentation);
+        return beforeUpdate;
     }
 
     public Map<String, Long> getCompanyMembersAmountByRole(List<String> ids){
@@ -63,9 +66,11 @@ public class KeycloakService {
                 .filter(name -> name.contains(companyName))
                 .findFirst().get();
     }
+
     public UserRepresentation getUserRepresentation(String userId) {
         return realmResource.users().get(userId).toRepresentation();
     }
+
     public CredentialPair<String, String> createKeycloakUser(UserRepresentation userRepresentation) {
         UsersResource usersResource = realmResource.users();
         RoleRepresentation REGISTER = realmResource.roles().get("REGISTRATOR").toRepresentation();
@@ -73,7 +78,7 @@ public class KeycloakService {
         userRepresentation.setCredentials(List.of(generatePasswordRepresentation(password)));
         Response response = usersResource.create(userRepresentation);
         UserResource resource = usersResource.get(CreatedResponseUtil.getCreatedId(response));
-        resource.roles().realmLevel().add(Arrays.asList(REGISTER));
+        resource.roles().realmLevel().add(Collections.singletonList(REGISTER));
         return new CredentialPair<>(
                 CreatedResponseUtil.getCreatedId(response),
                 password
@@ -91,7 +96,7 @@ public class KeycloakService {
         );
     }
 
-    public void assignRolesForCreatedCompany(String companyName){
+    public List<RoleRepresentation> assignRolesForCreatedCompany(String companyName){
         RoleRepresentation admin = new RoleRepresentation(
                 GenericCompanyRole.ADMIN_.name() + companyName, "", false
         );
@@ -102,9 +107,13 @@ public class KeycloakService {
                 GenericCompanyRole.DRIVER_.name() + companyName, "", false
         );
         List.of(admin, logist, driver).forEach(role -> realmResource.roles().create(role));
+        return List.of(admin, logist, driver);
     }
 
-    //TODO перенести userId во внутрь используя userContext
+    public UserResource getUserResource() {
+        return realmResource.users().get(userContext.getUserId().toString());
+    }
+
     public void userHasCurrentRole(List<String> neededRoles) {
         boolean result = realmResource.users()
                 .get(userContext.getUserId().toString())
@@ -114,7 +123,7 @@ public class KeycloakService {
                 .stream()
                 .map(RoleRepresentation::getName)
                 .anyMatch(neededRoles::contains);
-        if (!result) throw new RuntimeException("access denied");
+        if (!result) throw new AccessDeniedException();
     }
 
     public void hasCurrentGenericRole(GenericCompanyRole role) {
@@ -126,7 +135,7 @@ public class KeycloakService {
                 .stream()
                 .map(RoleRepresentation::getName)
                 .anyMatch(keycloakRole -> keycloakRole.startsWith(role.name()));
-        if (!result) throw new RuntimeException("access denied");
+        if (!result) throw new AccessDeniedException();
     }
 
     public void hasPermissionForAssigningUser(
@@ -156,14 +165,24 @@ public class KeycloakService {
         return role.name() + companyName;
     }
 
-    public void assignRoleToUser(String userId, GenericCompanyRole role, String companyName) {
+    public RoleRepresentation assignRoleToUser(String userId, GenericCompanyRole role, String companyName) {
+        RoleRepresentation roleRepresentation = getRoleRepresentation(role.name() + companyName);
         realmResource.users()
                 .get(userId)
                 .roles()
                 .realmLevel()
                 .add(
-                        List.of(getRoleRepresentation(role.name() + companyName))
+                        List.of(roleRepresentation)
                 );
+        return roleRepresentation;
+    }
+
+    public void deleteUserRole(RoleRepresentation roleRepresentation, String userId) {
+        realmResource.users().get(userId).roles().realmLevel().remove(List.of(roleRepresentation));
+    }
+
+    public void deleteUserById(String userId) {
+        realmResource.users().delete(userId);
     }
 
     public RoleRepresentation getRoleRepresentation(String roleName) {
