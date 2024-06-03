@@ -59,4 +59,12 @@ public class CompanyController {
                                         @RequestParam(required = false, defaultValue = "1") int limit){
         return companyMapper.toCompanyResponse(companyService.findAll(offset, limit));
     }
+
+    /*
+    @GetMapping("/{companyId}/users")
+    public Map<String, Long> getUsersWithRoles(@PathVariable String companyId) {
+        return userService.findUsersWithRoleCount(companyId);
+    }
+     */
+
 }

@@ -1,14 +1,11 @@
 package com.example.portal_service.service;
 
-import com.example.portal_service.interceptor.UserContext1;
+
+import com.example.gnivc_spring_boot_starter.UserContext;
 import com.example.portal_service.model.user.User;
 import com.example.portal_service.repository.UserRepository;
-import jakarta.ws.rs.core.Response;
+import com.example.portal_service.util.CredentialPair;
 import lombok.RequiredArgsConstructor;
-import org.keycloak.admin.client.CreatedResponseUtil;
-import org.keycloak.admin.client.Keycloak;
-import org.keycloak.admin.client.resource.*;
-import org.keycloak.representations.idm.RoleRepresentation;
 import org.keycloak.representations.idm.UserRepresentation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
@@ -20,11 +17,10 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class UserService {
-    private final Keycloak keycloak;
     private final UserRepository userRepository;
     private final MailService mailService;
     private final KeycloakService keycloakService;
-    private final UserContext1 userContext;
+    private final UserContext userContext;
     private CompanyService companyService;
 
     @Autowired
@@ -33,45 +29,30 @@ public class UserService {
         this.companyService = companyService;
     }
 
-    public String getUser() {
-        return keycloak.realm("GatewayRealm").roles().get("notExistsing").toRepresentation().getName();
-    }
     public String createRegistratorUser(UserRepresentation userRepresentation, User user) {
-        RealmResource realmResource = keycloak.realm("GatewayRealm");
-        UsersResource usersResource = realmResource.users();
-        RoleRepresentation REGISTER = realmResource.roles().get("REGISTRATOR").toRepresentation();
-        String password = PasswordGeneratorService.generatePassword();
-        userRepresentation.setCredentials(List.of(keycloakService.generatePasswordRepresentation(password)));
-        Response response = usersResource.create(userRepresentation);
-        String userId = CreatedResponseUtil.getCreatedId(response);
-        UserResource resource = usersResource.get(CreatedResponseUtil.getCreatedId(response));
-        resource.roles().realmLevel().add(Arrays.asList(REGISTER));
-        userRepository.createUser(userId, user.getFirstName(), user.getLastName(), user.getUsername(), user.getEmail());
-        mailService.sendMail(user, password, new Properties());
-        return password;
+        CredentialPair<String, String> creds = keycloakService.createKeycloakUser(userRepresentation);
+        userRepository.createUser(creds.getFirstElement(), user.getFirstName(), user.getLastName(), user.getUsername(), user.getEmail());
+        mailService.sendMail(user, creds.getSecondElement(), new Properties());
+        return creds.getSecondElement();
     }
 
     public String createCompanyUser(UserRepresentation userRepresentation, User user) {
-        RealmResource realmResource = keycloak.realm("GatewayRealm");
-        String password = PasswordGeneratorService.generatePassword();
-        UsersResource usersResource = realmResource.users();
-        userRepresentation.setCredentials(List.of(keycloakService.generatePasswordRepresentation(password)));
-        Response response = usersResource.create(userRepresentation);
-        userRepository.createUser(CreatedResponseUtil.getCreatedId(response), user.getFirstName(), user.getLastName(), user.getUsername(), user.getEmail());
-        mailService.sendMail(user, password, new Properties());
-        return CreatedResponseUtil.getCreatedId(response);
+        CredentialPair<String, String> creds = keycloakService.createCompanyUser(userRepresentation);
+        userRepository.createUser(creds.getFirstElement(), user.getFirstName(), user.getLastName(), user.getUsername(), user.getEmail());
+        mailService.sendMail(user, creds.getSecondElement(), new Properties());
+        return creds.getSecondElement();
     }
 
-    //обновить данные и в бд и в кейклоке
     public void updateUser(UserRepresentation userRepresentation, User updatedUser){
         updatedUser.setId(userContext.getUserId());
-        userRepository.save(updatedUser);
         keycloakService.updateUser(userRepresentation);
+        userRepository.save(updatedUser);
     }
 
     public User findById(UUID userId) {
         return userRepository.findById(userId).orElseThrow();
     }
+
     public Map<String, Long> findUsersWithRoleCount(String companyId) {
         return keycloakService.getCompanyMembersAmountByRole(
                 userRepository.findAllUsersIdByCompanyId(companyId)
@@ -79,6 +60,7 @@ public class UserService {
                         .collect(Collectors.toList())
         );
     }
+
     public List<User> findAllByCompanyId(UUID companyId) {
         return userRepository.findAllUsersIdByCompanyId(companyId.toString());
     }
@@ -86,7 +68,7 @@ public class UserService {
     public Map<String, String> findUsersWithCompanyRoles(UUID companyId){
         String companyName = companyService.findById(companyId).getName();
         return findAllByCompanyId(companyId).stream()
-                .collect(Collectors.toMap(User::getUsername, user -> keycloakService.getUserCompanyRole(user.getId().toString(), companyName)));
+                .collect(Collectors.toMap(User::getUsername, user -> keycloakService.getUserCompanyRole(companyName)));
     }
 
 }

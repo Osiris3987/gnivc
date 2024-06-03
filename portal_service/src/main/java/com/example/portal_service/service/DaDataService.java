@@ -17,10 +17,10 @@ public class DaDataService {
     private final RestTemplate restTemplate;
     private final Gson gson = new Gson();
 
-    public DaDataJsomArrayResponse sendPostRequest(String url, DaDataRequest dto) {
+    public DaDataJsomArrayResponse sendPostRequest(DaDataRequest dto) {
 
         RequestEntity<String> requestEntity = RequestEntity
-                .post(URI.create(url))
+                .post(URI.create("http://suggestions.dadata.ru/suggestions/api/4_1/rs/findById/party"))
                 .accept(MediaType.APPLICATION_JSON)
                 .contentType(MediaType.APPLICATION_JSON)
                 .header("Authorization", "Token 355d7bf9b6e3558691d85bc43a8ba9f5db1f3922")

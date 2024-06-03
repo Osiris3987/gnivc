@@ -1,6 +1,6 @@
 package com.example.portal_service.web.controller;
 
-import com.example.portal_service.interceptor.UserContext1;
+import com.example.gnivc_spring_boot_starter.UserContext;
 import com.example.portal_service.model.user.User;
 import com.example.portal_service.service.DaDataService;
 import com.example.portal_service.service.KeycloakService;
@@ -22,20 +22,11 @@ import java.util.Map;
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/users")
 public class PortalController {
-    private final UserContext1 userContext;
     private final UserService userService;
     private final DaDataService daDataService;
     private final UserMapper userMapper;
     private final KeycloakService keycloakService;
     private final UserMapperMapstruct userMapperMapstruct;
-    @GetMapping("/test")
-    public String test() {
-        return "hi from portal" + userContext.getUserId() + userContext.getRoles();
-    }
-    @GetMapping("/test1")
-    public String test1() {
-        return userService.getUser();
-    }
 
     @PostMapping
     public String test2(@RequestBody UserDto dto) {
@@ -53,16 +44,6 @@ public class PortalController {
                 userUpdateDto
         );
         userService.updateUser(updateUserRepresentation, updatedUser);
-    }
-
-    @GetMapping("/test3")
-    public DaDataJsomArrayResponse test3(@RequestBody DaDataRequest dto){
-        return daDataService.sendPostRequest("http://suggestions.dadata.ru/suggestions/api/4_1/rs/findById/party",
-                dto);
-    }
-    @GetMapping("/getUsersWithRoles")
-    public Map<String, Long> getUsersWithRoles(@RequestParam String companyId) {
-        return userService.findUsersWithRoleCount(companyId);
     }
 
     @PostMapping("/updatePassword")

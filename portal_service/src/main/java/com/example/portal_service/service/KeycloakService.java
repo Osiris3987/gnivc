@@ -1,9 +1,15 @@
 package com.example.portal_service.service;
 
-import com.example.portal_service.interceptor.UserContext1;
+
+import com.example.gnivc_spring_boot_starter.UserContext;
 import com.example.portal_service.model.company.GenericCompanyRole;
+import com.example.portal_service.util.CredentialPair;
+import jakarta.ws.rs.core.Response;
 import lombok.RequiredArgsConstructor;
+import org.keycloak.admin.client.CreatedResponseUtil;
 import org.keycloak.admin.client.resource.RealmResource;
+import org.keycloak.admin.client.resource.UserResource;
+import org.keycloak.admin.client.resource.UsersResource;
 import org.keycloak.representations.idm.CredentialRepresentation;
 import org.keycloak.representations.idm.RoleRepresentation;
 import org.keycloak.representations.idm.UserRepresentation;
@@ -17,7 +23,7 @@ import java.util.stream.Collectors;
 public class KeycloakService {
 
     private final RealmResource realmResource;
-    private final UserContext1 userContext;
+    private final UserContext userContext;
 
     public void changePassword(String password) {
         UserRepresentation userRepresentation = getUserRepresentation(userContext.getUserId().toString());
@@ -45,10 +51,10 @@ public class KeycloakService {
                 .collect(Collectors.groupingBy(RoleRepresentation::getName, Collectors.counting()));
     }
 
-    public String getUserCompanyRole(String userId, String companyName) {
+    public String getUserCompanyRole(String companyName) {
         return realmResource
                 .users()
-                .get(userId)
+                .get(userContext.getUserId().toString())
                 .roles()
                 .realmLevel()
                 .listAll()
@@ -60,11 +66,48 @@ public class KeycloakService {
     public UserRepresentation getUserRepresentation(String userId) {
         return realmResource.users().get(userId).toRepresentation();
     }
+    public CredentialPair<String, String> createKeycloakUser(UserRepresentation userRepresentation) {
+        UsersResource usersResource = realmResource.users();
+        RoleRepresentation REGISTER = realmResource.roles().get("REGISTRATOR").toRepresentation();
+        String password = PasswordGeneratorService.generatePassword();
+        userRepresentation.setCredentials(List.of(generatePasswordRepresentation(password)));
+        Response response = usersResource.create(userRepresentation);
+        UserResource resource = usersResource.get(CreatedResponseUtil.getCreatedId(response));
+        resource.roles().realmLevel().add(Arrays.asList(REGISTER));
+        return new CredentialPair<>(
+                CreatedResponseUtil.getCreatedId(response),
+                password
+        );
+    }
+
+    public CredentialPair<String, String> createCompanyUser(UserRepresentation userRepresentation) {
+        String password = PasswordGeneratorService.generatePassword();
+        UsersResource usersResource = realmResource.users();
+        userRepresentation.setCredentials(List.of(generatePasswordRepresentation(password)));
+        Response response = usersResource.create(userRepresentation);
+        return new CredentialPair<>(
+                CreatedResponseUtil.getCreatedId(response),
+                password
+        );
+    }
+
+    public void assignRolesForCreatedCompany(String companyName){
+        RoleRepresentation admin = new RoleRepresentation(
+                GenericCompanyRole.ADMIN_.name() + companyName, "", false
+        );
+        RoleRepresentation logist = new RoleRepresentation(
+                GenericCompanyRole.LOGIST_.name() + companyName, "", false
+        );
+        RoleRepresentation driver = new RoleRepresentation(
+                GenericCompanyRole.DRIVER_.name() + companyName, "", false
+        );
+        List.of(admin, logist, driver).forEach(role -> realmResource.roles().create(role));
+    }
 
     //TODO перенести userId во внутрь используя userContext
-    public void userHasCurrentRole(String userId, List<String> neededRoles) {
+    public void userHasCurrentRole(List<String> neededRoles) {
         boolean result = realmResource.users()
-                .get(userId)
+                .get(userContext.getUserId().toString())
                 .roles()
                 .realmLevel()
                 .listAll()
@@ -74,8 +117,19 @@ public class KeycloakService {
         if (!result) throw new RuntimeException("access denied");
     }
 
+    public void hasCurrentGenericRole(GenericCompanyRole role) {
+        boolean result = realmResource.users()
+                .get(userContext.getUserId().toString())
+                .roles()
+                .realmLevel()
+                .listAll()
+                .stream()
+                .map(RoleRepresentation::getName)
+                .anyMatch(keycloakRole -> keycloakRole.startsWith(role.name()));
+        if (!result) throw new RuntimeException("access denied");
+    }
+
     public void hasPermissionForAssigningUser(
-            String userId,
             GenericCompanyRole assignationRole,
             String companyName
     ) {
@@ -83,7 +137,6 @@ public class KeycloakService {
 
             case ADMIN_, LOGIST_  ->
                     userHasCurrentRole(
-                            userId,
                             List.of(
                                     getCompositeRole(GenericCompanyRole.ADMIN_, companyName)
                             )
@@ -91,7 +144,6 @@ public class KeycloakService {
 
             case DRIVER_ ->
                     userHasCurrentRole(
-                            userId,
                             List.of(
                                 getCompositeRole(GenericCompanyRole.ADMIN_, companyName),
                                 getCompositeRole(GenericCompanyRole.LOGIST_, companyName)

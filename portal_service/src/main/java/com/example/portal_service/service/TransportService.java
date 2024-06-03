@@ -1,6 +1,6 @@
 package com.example.portal_service.service;
 
-import com.example.portal_service.interceptor.UserContext1;
+import com.example.gnivc_spring_boot_starter.UserContext;
 import com.example.portal_service.model.company.Company;
 import com.example.portal_service.model.company.GenericCompanyRole;
 import com.example.portal_service.model.transport.Transport;
@@ -21,12 +21,9 @@ public class TransportService {
 
     private final KeycloakService keycloakService;
 
-    private final UserContext1 userContext;
-
     public Transport create(Transport transport, UUID companyId) {
         Company company = companyService.findById(companyId);
         keycloakService.userHasCurrentRole(
-                userContext.getUserId().toString(),
                 List.of(
                         GenericCompanyRole.ADMIN_.name() + company.getName(),
                         GenericCompanyRole.LOGIST_.name() + company.getName()
