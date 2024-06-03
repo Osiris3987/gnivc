@@ -5,23 +5,20 @@ import java.security.SecureRandom;
 import java.util.Random;
 
 public class PasswordGeneratorService {
+
+    //TODO refactor password generator algorithm
     public static String generatePassword() {
 
-        Random random = new SecureRandom();
+        Random random = new Random();
 
-        // Строка для хранения пароля
         StringBuilder password = new StringBuilder();
 
-        // Добавляем заглавную букву
-        password.append(Character.toUpperCase(random.nextInt(26) + 'A'));
-        // Добавляем строчную букву
-        password.append(Character.toLowerCase(random.nextInt(26) + 'a'));
-        // Добавляем цифру
+        password.append((char)(random.nextInt(26) + 'A'));
+        password.append((char)(random.nextInt(26) + 'a'));
         password.append(random.nextInt(10));
-        // Добавляем три случайных символа (буквы или цифры)
-        for (int i = 0; i < 3; i++) {
-            password.append((char) (random.nextInt(36) + '0'));
-        }
+        password.append((char)(random.nextInt(26) + 'a'));
+        password.append((char)(random.nextInt(26) + 'A'));
+        password.append(random.nextInt(10));
 
         return password.toString();
     }

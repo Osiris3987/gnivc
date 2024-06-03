@@ -2,6 +2,7 @@ package com.example.portal_service.service;
 
 
 import com.example.gnivc_spring_boot_starter.UserContext;
+import com.example.portal_service.model.exception.ResourceNotFoundException;
 import com.example.portal_service.model.user.User;
 import com.example.portal_service.repository.UserRepository;
 import com.example.portal_service.util.CredentialPair;
@@ -10,6 +11,7 @@ import org.keycloak.representations.idm.UserRepresentation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -29,30 +31,51 @@ public class UserService {
         this.companyService = companyService;
     }
 
+    @Transactional
     public String createRegistratorUser(UserRepresentation userRepresentation, User user) {
         CredentialPair<String, String> creds = keycloakService.createKeycloakUser(userRepresentation);
-        userRepository.createUser(creds.getFirstElement(), user.getFirstName(), user.getLastName(), user.getUsername(), user.getEmail());
+        try {
+            userRepository.createUser(creds.getFirstElement(), user.getFirstName(), user.getLastName(), user.getUsername(), user.getEmail());
+        } catch (Exception e) {
+            keycloakService.deleteUserById(creds.getFirstElement());
+            throw e;
+        }
         mailService.sendMail(user, creds.getSecondElement(), new Properties());
         return creds.getSecondElement();
     }
 
+    @Transactional
     public String createCompanyUser(UserRepresentation userRepresentation, User user) {
         CredentialPair<String, String> creds = keycloakService.createCompanyUser(userRepresentation);
-        userRepository.createUser(creds.getFirstElement(), user.getFirstName(), user.getLastName(), user.getUsername(), user.getEmail());
+        try {
+            userRepository.createUser(creds.getFirstElement(), user.getFirstName(), user.getLastName(), user.getUsername(), user.getEmail());
+        } catch (Exception e) {
+            keycloakService.deleteUserById(creds.getFirstElement());
+            throw e;
+        }
         mailService.sendMail(user, creds.getSecondElement(), new Properties());
         return creds.getFirstElement();
     }
 
-    public void updateUser(UserRepresentation userRepresentation, User updatedUser){
-        updatedUser.setId(userContext.getUserId());
-        keycloakService.updateUser(userRepresentation);
-        userRepository.save(updatedUser);
+    @Transactional
+    public void updateUser(UserRepresentation userRepresentation, User updatedUser) {
+        UserRepresentation beforeUpdate = keycloakService.updateUser(userRepresentation);
+        try {
+            updatedUser.setId(userContext.getUserId());
+            userRepository.save(updatedUser);
+        } catch (Exception e) {
+            keycloakService.updateUser(beforeUpdate);
+            throw e;
+        }
     }
 
+    @Transactional(readOnly = true)
     public User findById(UUID userId) {
-        return userRepository.findById(userId).orElseThrow();
+        return userRepository.findById(userId).orElseThrow(()
+                -> new ResourceNotFoundException("User not found"));
     }
 
+    @Transactional(readOnly = true)
     public Map<String, Long> findUsersWithRoleCount(String companyId) {
         return keycloakService.getCompanyMembersAmountByRole(
                 userRepository.findAllUsersIdByCompanyId(companyId)
@@ -61,10 +84,12 @@ public class UserService {
         );
     }
 
+    @Transactional(readOnly = true)
     public List<User> findAllByCompanyId(UUID companyId) {
         return userRepository.findAllUsersIdByCompanyId(companyId.toString());
     }
 
+    @Transactional(readOnly = true)
     public Map<String, String> findUsersWithCompanyRoles(UUID companyId){
         String companyName = companyService.findById(companyId).getName();
         return findAllByCompanyId(companyId).stream()
