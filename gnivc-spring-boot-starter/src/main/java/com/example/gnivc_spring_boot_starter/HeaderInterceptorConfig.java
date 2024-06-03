@@ -1,4 +1,4 @@
-package com.example.portal_service.interceptor;
+package com.example.gnivc_spring_boot_starter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;

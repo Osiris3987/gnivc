@@ -1,12 +1,9 @@
 package com.example.portal_service.web.controller;
 
-import com.example.gnivc_spring_boot_starter.UserContext;
 import com.example.portal_service.model.user.User;
-import com.example.portal_service.service.DaDataService;
 import com.example.portal_service.service.KeycloakService;
 import com.example.portal_service.service.UserService;
-import com.example.portal_service.web.dto.dadata_api.DaDataJsomArrayResponse;
-import com.example.portal_service.web.dto.dadata_api.DaDataRequest;
+import com.example.portal_service.web.dto.user.UpdatePasswordRequest;
 import com.example.portal_service.web.dto.user.UserDto;
 import com.example.portal_service.web.dto.user.UserUpdateDto;
 import com.example.portal_service.web.mapper.UserMapper;
@@ -16,20 +13,18 @@ import org.keycloak.representations.idm.UserRepresentation;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/users")
-public class PortalController {
+public class UserController {
     private final UserService userService;
-    private final DaDataService daDataService;
     private final UserMapper userMapper;
     private final KeycloakService keycloakService;
     private final UserMapperMapstruct userMapperMapstruct;
 
     @PostMapping
-    public String test2(@RequestBody UserDto dto) {
+    public String createRegistratorUser(@RequestBody UserDto dto) {
         return userService.createRegistratorUser(userMapper.toRepresentation(dto), userMapper.toEntity(dto));
     }
 
@@ -47,9 +42,10 @@ public class PortalController {
     }
 
     @PostMapping("/updatePassword")
-    public void updatePassword(@RequestParam String password){
-        keycloakService.changePassword(password);
+    public void updatePassword(@RequestBody UpdatePasswordRequest request){
+        keycloakService.changePassword(request.getPassword());
     }
+
     @GetMapping("/roles")
     public List<String> getAllRoles() {
         return keycloakService.getAllCompanyRoles();

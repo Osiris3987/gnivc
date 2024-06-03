@@ -1,9 +1,9 @@
 package com.example.gateway_service_gnivc.gateway.filter;
 
 import com.example.gateway_service_gnivc.security.model.UserDetailsImpl;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
-import lombok.SneakyThrows;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
 import org.springframework.http.server.reactive.ServerHttpRequest;
@@ -29,11 +29,15 @@ public class UserDetailsForwardFilter implements GlobalFilter {
                 .switchIfEmpty(chain.filter(exchange));
     }
 
-    @SneakyThrows
     private ServerHttpRequest getModifiedRequest(ServerWebExchange exchange, UserDetailsImpl userDetails) {
-        return exchange.getRequest().mutate()
-                .header("x-userId", userDetails.getUserId())
-                .header("x-roles", objectMapper.writeValueAsString(userDetails.getRoles()))
-                .build();
+        try {
+            return exchange.getRequest().mutate()
+                    .header("x-userId", userDetails.getUserId())
+                    .header("x-roles", objectMapper.writeValueAsString(userDetails.getRoles()))
+                    .build();
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }

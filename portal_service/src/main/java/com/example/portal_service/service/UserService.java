@@ -40,7 +40,7 @@ public class UserService {
         CredentialPair<String, String> creds = keycloakService.createCompanyUser(userRepresentation);
         userRepository.createUser(creds.getFirstElement(), user.getFirstName(), user.getLastName(), user.getUsername(), user.getEmail());
         mailService.sendMail(user, creds.getSecondElement(), new Properties());
-        return creds.getSecondElement();
+        return creds.getFirstElement();
     }
 
     public void updateUser(UserRepresentation userRepresentation, User updatedUser){

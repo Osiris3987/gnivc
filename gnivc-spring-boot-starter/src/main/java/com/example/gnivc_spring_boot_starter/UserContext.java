@@ -1,4 +1,4 @@
-package com.example.portal_service.interceptor;
+package com.example.gnivc_spring_boot_starter;
 
 import lombok.Getter;
 import lombok.Setter;

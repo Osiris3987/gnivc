@@ -40,7 +40,7 @@ public class CompanyService {
     }
 
     public List<Company> findAll(int offset, int limit) {
-        keycloakService.userHasCurrentRole(List.of(GenericCompanyRole.ADMIN_.name()));
+        keycloakService.hasCurrentGenericRole(GenericCompanyRole.ADMIN_);
         return companyRepository.findAll(PageRequest.of(offset, limit)).getContent();
     }
 
@@ -48,23 +48,19 @@ public class CompanyService {
         return companyRepository.findByName(name).orElseThrow();
     }
 
-    public void createCompany(DaDataRequest dto) {
+    public void createCompany(Company company) {
         RealmResource realmResource = keycloak.realm("GatewayRealm");
         UserResource userRepresentation = realmResource.users().get(userContext.getUserId().toString());
-        Company company = new Company();
-        DaDataResponse response = daDataService.sendPostRequest(dto).getSuggestions()[0];
-
-        company.setOgrn(response.getData().getOgrn());
-        company.setKpp(response.getData().getKpp());
-        company.setInn(response.getData().getInn());
-        company.setAddress(response.getData().getAddress().getValue());
         company.setOwner(userContext.getUserId().toString());
         User user = userService.findById(userContext.getUserId());
         company.setUsers(Set.of(user));
-        company.setName(response.getValue());
         companyRepository.save(company);
-        keycloakService.assignRolesForCreatedCompany(response.getValue());
-        userRepresentation.roles().realmLevel().add(List.of(realmResource.roles().get(GenericCompanyRole.ADMIN_.name() + response.getValue()).toRepresentation()));
+        keycloakService.assignRolesForCreatedCompany(company.getName());
+        userRepresentation.roles().realmLevel().add(
+                List.of(realmResource.roles()
+                        .get(GenericCompanyRole.ADMIN_.name() + company.getName())
+                        .toRepresentation())
+        );
     }
 
     public void assignRegisteredUserToCompany(AssignRegisteredUserToCompanyRequest dto) {

@@ -9,10 +9,10 @@ import org.mapstruct.Mapping;
 @Mapper(componentModel = "spring")
 public interface TransportMapper {
 
-    //@Mapping(source = "request.vin", target = "vin")
-    //@Mapping(source = "request.year", target = "year")
+    @Mapping(source = "request.vin", target = "vin")
+    @Mapping(source = "request.year", target = "year")
     Transport toEntity(TransportRequest request);
 
-    //@Mapping(source = "transport.company.id", target = "companyId")
+    @Mapping(source = "transport.company.id", target = "companyId")
     TransportResponse toResponseDto(Transport transport);
 }

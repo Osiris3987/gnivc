@@ -18,6 +18,7 @@ spring:
             - Path=/openid-connect/**
           filters:
             - RewritePath=/openid-connect,/realms/GatewayRealm/protocol/openid-connect
+
         - id: portal
           uri: http://localhost:8082
           predicates:

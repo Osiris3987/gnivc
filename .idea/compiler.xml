@@ -21,7 +21,7 @@
       <module name="driver_service" target="17" />
       <module name="dwh_service" target="17" />
       <module name="gateway_service_gnivc" target="17" />
-      <module name="logist_sevice" target="1.5" />
+      <module name="logist_sevice" target="17" />
       <module name="portal_service" target="17" />
     </bytecodeTargetLevel>
   </component>
@@ -32,6 +32,7 @@
       <module name="driver_service" options="-parameters" />
       <module name="dwh_service" options="-parameters" />
       <module name="gateway_service_gnivc" options="-parameters" />
+      <module name="logist_sevice" options="-parameters" />
       <module name="portal_service" options="-parameters" />
     </option>
   </component>
