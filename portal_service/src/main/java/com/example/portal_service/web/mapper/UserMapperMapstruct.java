@@ -29,8 +29,8 @@ public abstract class UserMapperMapstruct {
             unmappedTargetPolicy = ReportingPolicy.IGNORE,
             typeConversionPolicy = ReportingPolicy.WARN,
             collectionMappingStrategy = CollectionMappingStrategy.ADDER_PREFERRED,
-            nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE
-            //nullValueCheckStrategy = NullValueCheckStrategy.ALWAYS
+            nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE,
+            nullValueCheckStrategy = NullValueCheckStrategy.ALWAYS
     )
     interface Updater {
         User updateUser(@MappingTarget User entity, UserUpdateDto dtoForUpdate);

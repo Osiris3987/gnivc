@@ -21,6 +21,10 @@ public class UserDetailsImpl implements UserDetails {
         return mapToGrantedAuthorities(roles);
     }
 
+    public String getUserId(){
+        return userId;
+    }
+
     @Override
     public String getPassword() {
         return "default";

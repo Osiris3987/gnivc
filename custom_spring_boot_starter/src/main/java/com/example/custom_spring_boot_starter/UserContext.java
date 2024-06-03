@@ -1,4 +1,4 @@
-package com.example.portal_service.interceptor;
+package com.example.custom_spring_boot_starter;
 
 import lombok.Getter;
 import lombok.Setter;

@@ -1,6 +1,6 @@
 package com.example.portal_service.service;
 
-import com.example.portal_service.interceptor.UserContext;
+import com.example.gnivc_spring_boot_starter.UserContext;
 import com.example.portal_service.model.company.Company;
 import com.example.portal_service.model.company.GenericCompanyRole;
 import com.example.portal_service.model.user.User;
@@ -31,11 +31,16 @@ public class CompanyService {
     private final Keycloak keycloak;
     private final KeycloakService keycloakService;
 
-    public Company findById(UUID id){
-        return companyRepository.findById(id).orElseThrow();
+    public Company findById(UUID id) {
+        Company company = companyRepository.findById(id).orElseThrow();
+        keycloakService.userHasCurrentRole(List.of(
+                GenericCompanyRole.ADMIN_.name() + company.getName())
+        );
+        return company;
     }
 
     public List<Company> findAll(int offset, int limit) {
+        keycloakService.hasCurrentGenericRole(GenericCompanyRole.ADMIN_);
         return companyRepository.findAll(PageRequest.of(offset, limit)).getContent();
     }
 
@@ -43,42 +48,24 @@ public class CompanyService {
         return companyRepository.findByName(name).orElseThrow();
     }
 
-    public void createCompany(DaDataRequest dto) {
+    public void createCompany(Company company) {
         RealmResource realmResource = keycloak.realm("GatewayRealm");
         UserResource userRepresentation = realmResource.users().get(userContext.getUserId().toString());
-        Company company = new Company();
-        DaDataResponse response = daDataService.sendPostRequest("http://suggestions.dadata.ru/suggestions/api/4_1/rs/findById/party", dto).getSuggestions()[0];
-
-        company.setOgrn(response.getData().getOgrn());
-        company.setKpp(response.getData().getKpp());
-        company.setInn(response.getData().getInn());
-        company.setAddress(response.getData().getAddress().getValue());
         company.setOwner(userContext.getUserId().toString());
         User user = userService.findById(userContext.getUserId());
         company.setUsers(Set.of(user));
-        company.setName(response.getValue());
         companyRepository.save(company);
-        assignRolesForCreatedCompany(response.getValue());
-        userRepresentation.roles().realmLevel().add(List.of(realmResource.roles().get(GenericCompanyRole.ADMIN_.name() + response.getValue()).toRepresentation()));
-    }
-    public void assignRolesForCreatedCompany(String companyName){
-        RoleRepresentation admin = new RoleRepresentation(
-                GenericCompanyRole.ADMIN_.name() + companyName, "", false
+        keycloakService.assignRolesForCreatedCompany(company.getName());
+        userRepresentation.roles().realmLevel().add(
+                List.of(realmResource.roles()
+                        .get(GenericCompanyRole.ADMIN_.name() + company.getName())
+                        .toRepresentation())
         );
-        RoleRepresentation logist = new RoleRepresentation(
-                GenericCompanyRole.LOGIST_.name() + companyName, "", false
-        );
-        RoleRepresentation driver = new RoleRepresentation(
-                GenericCompanyRole.DRIVER_.name() + companyName, "", false
-        );
-        RealmResource realmResource = keycloak.realm("GatewayRealm");
-        List.of(admin, logist, driver).forEach(role -> realmResource.roles().create(role));
     }
 
     public void assignRegisteredUserToCompany(AssignRegisteredUserToCompanyRequest dto) {
 
         keycloakService.hasPermissionForAssigningUser(
-                userContext.getUserId().toString(),
                 dto.getRole(),
                 dto.getCompanyName()
         );
@@ -101,7 +88,6 @@ public class CompanyService {
         Company company = companyRepository.findByName(companyName).orElseThrow();
 
         keycloakService.hasPermissionForAssigningUser(
-                userContext.getUserId().toString(),
                 role,
                 companyName
         );

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/custom_spring_boot_starter/custom_spring_boot_starter.iml" filepath="$PROJECT_DIR$/custom_spring_boot_starter/custom_spring_boot_starter.iml" />
+      <module fileurl="file://$PROJECT_DIR$/discovery_service_gnivc/discovery_service_gnivc.iml" filepath="$PROJECT_DIR$/discovery_service_gnivc/discovery_service_gnivc.iml" />
+      <module fileurl="file://$PROJECT_DIR$/driver_service/driver_service.iml" filepath="$PROJECT_DIR$/driver_service/driver_service.iml" />
+      <module fileurl="file://$PROJECT_DIR$/dwh_service/dwh_service.iml" filepath="$PROJECT_DIR$/dwh_service/dwh_service.iml" />
+      <module fileurl="file://$PROJECT_DIR$/gateway_service_gnivc/gateway_service_gnivc.iml" filepath="$PROJECT_DIR$/gateway_service_gnivc/gateway_service_gnivc.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/gnivc.iml" filepath="$PROJECT_DIR$/.idea/gnivc.iml" />
+      <module fileurl="file://$PROJECT_DIR$/logist_sevice/logist_sevice.iml" filepath="$PROJECT_DIR$/logist_sevice/logist_sevice.iml" />
+      <module fileurl="file://$PROJECT_DIR$/portal_service/portal_service.iml" filepath="$PROJECT_DIR$/portal_service/portal_service.iml" />
+    </modules>
+  </component>
+</project>
