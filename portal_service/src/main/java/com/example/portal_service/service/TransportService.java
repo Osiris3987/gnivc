@@ -1,8 +1,8 @@
 package com.example.portal_service.service;
 
-import com.example.gnivc_spring_boot_starter.UserContext;
 import com.example.portal_service.model.company.Company;
 import com.example.portal_service.model.company.GenericCompanyRole;
+import com.example.portal_service.model.exception.ResourceNotFoundException;
 import com.example.portal_service.model.transport.Transport;
 import com.example.portal_service.repository.TransportRepository;
 import lombok.RequiredArgsConstructor;
@@ -32,5 +32,10 @@ public class TransportService {
         transport.setCompany(company);
         transportRepository.save(transport);
         return transport;
+    }
+
+    public Transport findByVinAndCompany(String vin, Company company) {
+        return transportRepository.findByVinAndCompany(vin, company)
+                .orElseThrow(() -> new ResourceNotFoundException("Transport not found"));
     }
 }

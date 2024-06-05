@@ -1,6 +1,6 @@
-package com.example.logist_sevice.model.task;
+package com.example.logist_sevice.model.race;
 
-import com.example.logist_sevice.model.race.Task;
+import com.example.logist_sevice.model.task.Task;
 import jakarta.persistence.*;
 import lombok.Data;
 import org.hibernate.annotations.JdbcTypeCode;

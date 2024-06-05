@@ -9,7 +9,7 @@ create table tasks
     start_point varchar not null,
     end_point varchar not null,
     driver_first_name varchar not null,
-    driver_second_name varchar not null,
+    driver_last_name varchar not null,
     description varchar not null,
     transport_state_number varchar not null
 );

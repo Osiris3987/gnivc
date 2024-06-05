@@ -1,6 +1,6 @@
-package com.example.logist_sevice.model.race;
+package com.example.logist_sevice.model.task;
 
-import com.example.logist_sevice.model.task.Race;
+import com.example.logist_sevice.model.race.Race;
 import jakarta.persistence.*;
 import lombok.Data;
 import org.hibernate.annotations.JdbcTypeCode;
@@ -28,8 +28,8 @@ public class Task {
     @Column(name = "driver_first_name")
     private String driverFirstName;
 
-    @Column(name = "driver_second_name")
-    private String driverSecondName;
+    @Column(name = "driver_last_name")
+    private String driverLastName;
 
     @Column(name = "description")
     private String description;

@@ -26,6 +26,13 @@ spring:
           filters:
             - RewritePath=/portal,/api/v1
 
+        - id: logist
+          uri: http://localhost:8083
+          predicates:
+            - Path=/logist/**
+          filters:
+            - RewritePath=/logist,/api/v1
+
       default-filters:
         - DedupeResponseHeader=Access-Control-Allow-Origin, RETAIN_LAST
         - AddResponseHeader=AccessControl-Allow-Origin, *

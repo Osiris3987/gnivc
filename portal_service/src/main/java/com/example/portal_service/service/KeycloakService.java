@@ -213,4 +213,17 @@ public class KeycloakService {
                         role.startsWith(GenericCompanyRole.DRIVER_.name()))
                 .toList();
     }
+
+    public void userHasDriverRole(String userId, String companyName) {
+        String neededRole = GenericCompanyRole.DRIVER_.name() + companyName;
+        boolean result = realmResource.users()
+                .get(userId)
+                .roles()
+                .realmLevel()
+                .listAll()
+                .stream()
+                .map(RoleRepresentation::getName)
+                .anyMatch(role -> role.equals(neededRole));
+        if (!result) throw new AccessDeniedException();
+    }
 }

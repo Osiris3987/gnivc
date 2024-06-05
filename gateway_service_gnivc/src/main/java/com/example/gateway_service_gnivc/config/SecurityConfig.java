@@ -27,7 +27,9 @@ public class SecurityConfig {
                 .csrf(ServerHttpSecurity.CsrfSpec::disable)
                 .authorizeExchange(request ->
                         request
-                                .pathMatchers("/**").permitAll()
+                                .pathMatchers("/portal/**").permitAll()
+                                .pathMatchers("/logist/**").hasAuthority("LOGIST")
+                                .pathMatchers("/openid-connect/**").permitAll()
                 )
                 .oauth2ResourceServer(resourceServerConfigurer -> resourceServerConfigurer
                         .authenticationManagerResolver(context -> Mono.just(provider)))

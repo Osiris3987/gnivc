@@ -22,6 +22,8 @@ public abstract class UserMapperMapstruct {
         return updater.updateUserRepresentation(userRepresentation, dtoForUpdate);
     }
 
+    public abstract UserDto toDto(User user);
+
 
     @Mapper(
             componentModel = "spring",
