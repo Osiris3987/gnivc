@@ -11,6 +11,7 @@ public class TransportResponse {
     private String vin;
 
     private Integer year;
+    private String stateNumber;
 
     private UUID companyId;
 }

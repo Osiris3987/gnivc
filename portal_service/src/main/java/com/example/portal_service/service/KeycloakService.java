@@ -174,6 +174,10 @@ public class KeycloakService {
                 .add(
                         List.of(roleRepresentation)
                 );
+
+        if(!realmResource.users().get(userId).roles().realmLevel().listAll().contains(realmResource.roles().get(role.name().replace("_", "")).toRepresentation())) {
+            realmResource.users().get(userId).roles().realmLevel().add(List.of(realmResource.roles().get(role.name().replace("_", "")).toRepresentation()));
+        }
         return roleRepresentation;
     }
 
