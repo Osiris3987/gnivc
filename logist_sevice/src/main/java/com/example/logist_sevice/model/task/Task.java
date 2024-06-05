@@ -37,6 +37,9 @@ public class Task {
     @Column(name = "transport_state_number")
     private String transportStateNumber;
 
+    @Column(name = "company_id")
+    private String companyId;
+
     @OneToMany
     @JoinTable(name = "races",
             inverseJoinColumns = @JoinColumn(name = "id")

@@ -3,18 +3,20 @@ package com.example.logist_sevice.web.controller;
 import com.example.gnivc_spring_boot_starter.UserContext;
 import com.example.logist_sevice.config.TransportClientFeign;
 import com.example.logist_sevice.config.UserClientFeign;
+import com.example.logist_sevice.model.task.Task;
 import com.example.logist_sevice.service.TaskService;
 import com.example.logist_sevice.web.dto.TaskRequest;
+import com.example.logist_sevice.web.dto.TaskResponse;
 import com.example.logist_sevice.web.dto.TransportResponse;
 import com.example.logist_sevice.web.dto.UserDto;
 import com.example.logist_sevice.web.mapper.TaskMapper;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequiredArgsConstructor
@@ -28,7 +30,7 @@ public class TaskController {
     private final ObjectMapper objectMapper;
     @PostMapping
     @SneakyThrows
-    public void createTask(@RequestBody TaskRequest request) {
+    public TaskResponse createTask(@RequestBody TaskRequest request) {
         UserDto userResponse = userClient.getCompanyDriver(
                 request.getDriver(),
                 userContext.getUserId().toString(),
@@ -39,8 +41,16 @@ public class TaskController {
                 userContext.getUserId().toString(),
                 objectMapper.writeValueAsString(userContext.getRoles())
         );
-        taskService.create(
-                taskMapper.toEntity(request, userResponse, transportResponse)
-        );
+        Task task = taskService.create(taskMapper.toEntity(request, userResponse, transportResponse));
+        return taskMapper.toResponse(task);
+    }
+
+    @GetMapping("/{companyId}")
+    public List<TaskResponse> getAllTasksByCompanyId(
+            @RequestParam(required = false, defaultValue = "0") int offset,
+            @RequestParam(required = false, defaultValue = "1") int limit,
+            @PathVariable UUID companyId
+            ){
+        return taskMapper.toResponseList(taskService.findAllByCompanyId(offset, limit, companyId));
     }
 }

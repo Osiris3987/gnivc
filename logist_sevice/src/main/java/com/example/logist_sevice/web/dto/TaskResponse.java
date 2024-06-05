@@ -1,12 +1,25 @@
 package com.example.logist_sevice.web.dto;
+
 import lombok.Data;
 
+import java.util.UUID;
+
 @Data
-public class TaskRequest {
+public class TaskResponse {
+
+    private UUID id;
+
     private String startPoint;
+
     private String endPoint;
+
+    private String driverFirstName;
+
+    private String driverLastName;
+
     private String description;
+
+    private String transportStateNumber;
+
     private String companyId;
-    private TransportRequest transport;
-    private CompanyDriverRequest driver;
 }
