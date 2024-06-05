@@ -1,0 +1,22 @@
+version: '3'
+
+services:
+
+  postgres1:
+    container_name: logist_db
+    image: 'postgres:15.1-alpine'
+    ports:
+      - "5438:5432"
+    env_file:
+      - .env
+    networks:
+      - test_network
+    volumes:
+      - db-data1:/var/lib/postgresql/data1
+
+networks:
+  test_network:
+
+volumes:
+  db-data1:
+    driver: local
