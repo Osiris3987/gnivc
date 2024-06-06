@@ -1,5 +1,6 @@
 package com.example.logist_sevice.service;
 
+import com.example.logist_sevice.model.exception.ResourceNotFoundException;
 import com.example.logist_sevice.model.task.Task;
 import com.example.logist_sevice.repository.TaskRepository;
 import lombok.RequiredArgsConstructor;
@@ -24,5 +25,10 @@ public class TaskService {
     @Transactional(readOnly = true)
     public List<Task> findAllByCompanyId(int offset, int limit, UUID companyId) {
         return taskRepository.findTasksByCompanyId(companyId.toString(), PageRequest.of(offset, limit));
+    }
+
+    @Transactional(readOnly = true)
+    public Task findTaskById(UUID id) {
+        return taskRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("task not found"));
     }
 }

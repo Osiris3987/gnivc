@@ -1,14 +1,17 @@
 package com.example.logist_sevice.web.controller;
 
 import com.example.gnivc_spring_boot_starter.UserContext;
-import com.example.logist_sevice.config.TransportClientFeign;
-import com.example.logist_sevice.config.UserClientFeign;
+import com.example.logist_sevice.config.feign.TransportFeignClient;
+import com.example.logist_sevice.config.feign.UserFeignClient;
 import com.example.logist_sevice.model.task.Task;
+import com.example.logist_sevice.service.RaceService;
 import com.example.logist_sevice.service.TaskService;
-import com.example.logist_sevice.web.dto.TaskRequest;
-import com.example.logist_sevice.web.dto.TaskResponse;
-import com.example.logist_sevice.web.dto.TransportResponse;
-import com.example.logist_sevice.web.dto.UserDto;
+import com.example.logist_sevice.web.dto.race.RaceResponse;
+import com.example.logist_sevice.web.dto.task.TaskRequest;
+import com.example.logist_sevice.web.dto.task.TaskResponse;
+import com.example.logist_sevice.web.dto.transport.TransportResponse;
+import com.example.logist_sevice.web.dto.user.UserDto;
+import com.example.logist_sevice.web.mapper.RaceMapper;
 import com.example.logist_sevice.web.mapper.TaskMapper;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
@@ -22,12 +25,22 @@ import java.util.UUID;
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/tasks")
 public class TaskController {
-    private final TaskMapper taskMapper;
     private final TaskService taskService;
-    private final UserClientFeign userClient;
-    private final TransportClientFeign transportClient;
-    private final UserContext userContext;
+
+    private final RaceService raceService;
+
+    private final TaskMapper taskMapper;
+
+    private final RaceMapper raceMapper;
+
     private final ObjectMapper objectMapper;
+
+    private final UserFeignClient userClient;
+
+    private final TransportFeignClient transportClient;
+
+    private final UserContext userContext;
+
     @PostMapping
     @SneakyThrows
     public TaskResponse createTask(@RequestBody TaskRequest request) {
@@ -52,5 +65,15 @@ public class TaskController {
             @PathVariable UUID companyId
             ){
         return taskMapper.toResponseList(taskService.findAllByCompanyId(offset, limit, companyId));
+    }
+
+    @GetMapping("/{taskId}/races")
+    public List<RaceResponse> getAllRacesByTaskId(
+            @RequestParam(required = false, defaultValue = "0") int offset,
+            @RequestParam(required = false, defaultValue = "1") int limit,
+            @PathVariable UUID taskId
+    ) {
+        Task task = taskService.findTaskById(taskId);
+        return raceMapper.toResponseList(raceService.findAllByTask(task, offset, limit));
     }
 }

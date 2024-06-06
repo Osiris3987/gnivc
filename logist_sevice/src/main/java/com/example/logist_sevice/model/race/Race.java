@@ -7,6 +7,7 @@ import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -31,6 +32,16 @@ public class Race {
     @ManyToOne
     @JoinColumn(name = "task_id")
     private Task task;
+
+    @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(
+            name = "race_events",
+            joinColumns = @JoinColumn(
+                    name = "race_id",
+                    foreignKey = @ForeignKey(name = "fk_race_events_race")
+            )
+    )
+    private List<RaceEvent> raceEvents;
 
     /**
      * create table races

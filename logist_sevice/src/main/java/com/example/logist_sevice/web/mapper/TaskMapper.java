@@ -1,10 +1,10 @@
 package com.example.logist_sevice.web.mapper;
 
 import com.example.logist_sevice.model.task.Task;
-import com.example.logist_sevice.web.dto.TaskRequest;
-import com.example.logist_sevice.web.dto.TaskResponse;
-import com.example.logist_sevice.web.dto.TransportResponse;
-import com.example.logist_sevice.web.dto.UserDto;
+import com.example.logist_sevice.web.dto.task.TaskRequest;
+import com.example.logist_sevice.web.dto.task.TaskResponse;
+import com.example.logist_sevice.web.dto.transport.TransportResponse;
+import com.example.logist_sevice.web.dto.user.UserDto;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 

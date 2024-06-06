@@ -1,18 +1,16 @@
 package com.example.logist_sevice.web.controller;
 
 import com.example.gnivc_spring_boot_starter.UserContext;
-import com.example.logist_sevice.config.TransportClientFeign;
-import com.example.logist_sevice.config.UserClientFeign;
-import com.example.logist_sevice.web.dto.CompanyDriverRequest;
-import com.example.logist_sevice.web.dto.TransportRequest;
-import com.example.logist_sevice.web.dto.TransportResponse;
-import com.example.logist_sevice.web.dto.UserDto;
+import com.example.logist_sevice.config.feign.TransportFeignClient;
+import com.example.logist_sevice.config.feign.UserFeignClient;
+import com.example.logist_sevice.web.dto.user.CompanyDriverRequest;
+import com.example.logist_sevice.web.dto.transport.TransportRequest;
+import com.example.logist_sevice.web.dto.transport.TransportResponse;
+import com.example.logist_sevice.web.dto.user.UserDto;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -20,21 +18,21 @@ import java.util.List;
 public class TestController {
     private final UserContext userContext;
 
-    private final UserClientFeign userClientFeign;
+    private final UserFeignClient userFeignClient;
 
-    private final TransportClientFeign transportClientFeign;
+    private final TransportFeignClient transportFeignClient;
 
     private final ObjectMapper objectMapper;
 
     @PostMapping("/driver")
     @SneakyThrows
     public UserDto getCompanyDriver(@RequestBody CompanyDriverRequest dto) {
-        return userClientFeign.getCompanyDriver(dto, userContext.getUserId().toString(), objectMapper.writeValueAsString(userContext.getRoles()));
+        return userFeignClient.getCompanyDriver(dto, userContext.getUserId().toString(), objectMapper.writeValueAsString(userContext.getRoles()));
     }
 
     @PostMapping("/transport")
     @SneakyThrows
     public TransportResponse getCom(@RequestBody TransportRequest dto) {
-        return transportClientFeign.getByVinAndCompany(dto, userContext.getUserId().toString(), objectMapper.writeValueAsString(userContext.getRoles()));
+        return transportFeignClient.getByVinAndCompany(dto, userContext.getUserId().toString(), objectMapper.writeValueAsString(userContext.getRoles()));
     }
 }
