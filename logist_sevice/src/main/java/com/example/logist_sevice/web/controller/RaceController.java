@@ -30,7 +30,7 @@ public class RaceController {
 
     @PostMapping
     @SneakyThrows
-    public RaceResponse createTask(@RequestBody RaceRequest request) {
+    public RaceResponse createRace(@RequestBody RaceRequest request) {
         Task task = taskService.findTaskById(request.getTaskId());
         authorizationClient.canAccessCompany(
                 new CompanyAccessRequest(UUID.fromString(task.getCompanyId())),

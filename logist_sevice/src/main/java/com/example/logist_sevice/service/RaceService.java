@@ -2,6 +2,8 @@ package com.example.logist_sevice.service;
 
 import com.example.logist_sevice.model.exception.ResourceNotFoundException;
 import com.example.logist_sevice.model.race.Race;
+import com.example.logist_sevice.model.race.RaceEvent;
+import com.example.logist_sevice.model.race.RaceEventType;
 import com.example.logist_sevice.model.task.Task;
 import com.example.logist_sevice.repository.RaceRepository;
 import lombok.RequiredArgsConstructor;
@@ -21,6 +23,7 @@ public class RaceService {
     @Transactional
     public Race create(Race race) {
         race.setCreatedAt(LocalDateTime.now());
+        race.setRaceEvents(List.of(assignRaceEventToNewRace()));
         return raceRepository.save(race);
     }
 
@@ -37,5 +40,12 @@ public class RaceService {
     @Transactional
     public Race update(Race race) {
         return raceRepository.save(race);
+    }
+
+    private RaceEvent assignRaceEventToNewRace() {
+        RaceEvent raceEvent = new RaceEvent();
+        raceEvent.setEventType(RaceEventType.CREATED);
+        raceEvent.setCreatedAt(LocalDateTime.now());
+        return raceEvent;
     }
 }

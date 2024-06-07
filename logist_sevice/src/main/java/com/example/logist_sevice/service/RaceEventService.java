@@ -3,7 +3,7 @@ package com.example.logist_sevice.service;
 import com.example.logist_sevice.model.race.Race;
 import com.example.logist_sevice.model.race.RaceEvent;
 import com.example.logist_sevice.model.race.RaceEventType;
-import com.example.logist_sevice.web.dto.RaceEventRequest;
+import com.example.logist_sevice.web.dto.race_event.RaceEventRequest;
 import com.google.gson.Gson;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;

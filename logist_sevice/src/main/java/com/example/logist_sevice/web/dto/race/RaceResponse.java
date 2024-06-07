@@ -1,5 +1,6 @@
 package com.example.logist_sevice.web.dto.race;
 
+import com.example.logist_sevice.web.dto.race_event.RaceEventResponse;
 import lombok.Data;
 
 import java.time.LocalDateTime;
@@ -17,4 +18,6 @@ public class RaceResponse {
     private LocalDateTime endedAt;
 
     private UUID taskId;
+
+    private RaceEventResponse latestEvent;
 }

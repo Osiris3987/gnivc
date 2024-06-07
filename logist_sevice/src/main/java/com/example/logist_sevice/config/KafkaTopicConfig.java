@@ -12,4 +12,10 @@ public class KafkaTopicConfig {
         return TopicBuilder.name("race_event_topic")
                 .build();
     }
+
+    @Bean
+    public NewTopic raceGeoPositions() {
+        return TopicBuilder.name("race_geo_positions_topic")
+                .build();
+    }
 }

@@ -1,4 +1,4 @@
-package com.example.logist_sevice.web.dto;
+package com.example.logist_sevice.web.dto.race_event;
 
 import com.example.logist_sevice.model.race.RaceEventType;
 import lombok.Data;

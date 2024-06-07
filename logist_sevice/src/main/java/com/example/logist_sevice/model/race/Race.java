@@ -43,6 +43,16 @@ public class Race {
     )
     private List<RaceEvent> raceEvents;
 
+    @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(
+            name = "geo_positions",
+            joinColumns = @JoinColumn(
+                    name = "race_id",
+                    foreignKey = @ForeignKey(name = "fk_race_events_geo_position")
+            )
+    )
+    private List<GeoPosition> geoPositions;
+
     /**
      * create table races
      * (
