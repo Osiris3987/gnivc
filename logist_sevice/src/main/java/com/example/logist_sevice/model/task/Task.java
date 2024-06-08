@@ -31,6 +31,9 @@ public class Task {
     @Column(name = "driver_last_name")
     private String driverLastName;
 
+    @Column(name = "driver_id")
+    private String driverId;
+
     @Column(name = "description")
     private String description;
 

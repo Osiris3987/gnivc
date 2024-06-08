@@ -1,4 +1,4 @@
-package com.example.logist_sevice.config;
+package com.example.driver_service.config;
 
 import org.apache.kafka.clients.admin.NewTopic;
 import org.springframework.context.annotation.Bean;
@@ -7,6 +7,7 @@ import org.springframework.kafka.config.TopicBuilder;
 
 @Configuration
 public class KafkaTopicConfig {
+
     @Bean
     public NewTopic raceEvents(){
         return TopicBuilder.name("race_event_topic")
@@ -24,4 +25,5 @@ public class KafkaTopicConfig {
         return TopicBuilder.name("race_topic")
                 .build();
     }
+
 }

@@ -21,6 +21,7 @@ public interface TaskMapper {
     @Mapping(source = "transportResponse.stateNumber", target = "transportStateNumber")
     @Mapping(ignore = true, source = "transportResponse.id", target = "id")
     @Mapping(source = "taskRequest.companyId", target = "companyId")
+    @Mapping(source = "userResponse.userId", target = "driverId")
     Task toEntity(TaskRequest taskRequest, UserDto userResponse, TransportResponse transportResponse);
 
     @Mapping(source = "task.id", target = "id")

@@ -32,6 +32,12 @@ spring:
             - Path=/logist/**
           filters:
             - RewritePath=/logist,/api/v1
+        - id: driver
+          uri: http://localhost:8084
+          predicates:
+            - Path=/driver/**
+          filters:
+            - RewritePath=/driver,/api/v1
 
       default-filters:
         - DedupeResponseHeader=Access-Control-Allow-Origin, RETAIN_LAST
