@@ -1,0 +1,3 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+  com.example.gnivc_spring_boot_starter.HeaderInterceptorConfig\
+  com.example.gnivc_spring_boot_starter.MvcConfigurer
