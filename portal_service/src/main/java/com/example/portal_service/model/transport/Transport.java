@@ -22,6 +22,9 @@ public class Transport {
 
     private Integer year;
 
+    @Column(name = "state_number")
+    private String stateNumber;
+
     @ManyToOne
     @JoinColumn(name = "company_id")
     private Company company;

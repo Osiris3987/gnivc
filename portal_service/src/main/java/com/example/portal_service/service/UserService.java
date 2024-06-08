@@ -2,6 +2,8 @@ package com.example.portal_service.service;
 
 
 import com.example.gnivc_spring_boot_starter.UserContext;
+import com.example.portal_service.model.company.Company;
+import com.example.portal_service.model.company.GenericCompanyRole;
 import com.example.portal_service.model.exception.ResourceNotFoundException;
 import com.example.portal_service.model.user.User;
 import com.example.portal_service.repository.UserRepository;
@@ -94,6 +96,12 @@ public class UserService {
         String companyName = companyService.findById(companyId).getName();
         return findAllByCompanyId(companyId).stream()
                 .collect(Collectors.toMap(User::getUsername, user -> keycloakService.getUserCompanyRole(companyName)));
+    }
+
+    public User findCompanyDriver(User user, Company company) {
+        keycloakService.userHasDriverRole(user.getId().toString(), company.getName());
+        keycloakService.userHasCurrentRole(List.of(GenericCompanyRole.LOGIST_.name() + company.getName()));
+        return user;
     }
 
 }

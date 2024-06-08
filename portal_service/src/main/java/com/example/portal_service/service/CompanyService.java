@@ -34,7 +34,7 @@ public class CompanyService {
         Company company = companyRepository.findById(id).orElseThrow(()
                 -> new ResourceNotFoundException("Company not found"));
         keycloakService.userHasCurrentRole(List.of(
-                GenericCompanyRole.ADMIN_.name() + company.getName())
+                GenericCompanyRole.ADMIN_.name() + company.getName(), GenericCompanyRole.LOGIST_.name() + company.getName())
         );
         return company;
     }

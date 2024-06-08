@@ -11,5 +11,7 @@ public class TransportRequest {
 
     private Integer year;
 
+    private String stateNumber;
+
     private UUID companyId;
 }

@@ -11,6 +11,7 @@ public interface TransportMapper {
 
     @Mapping(source = "request.vin", target = "vin")
     @Mapping(source = "request.year", target = "year")
+    @Mapping(source = "request.stateNumber", target = "stateNumber")
     Transport toEntity(TransportRequest request);
 
     @Mapping(source = "transport.company.id", target = "companyId")

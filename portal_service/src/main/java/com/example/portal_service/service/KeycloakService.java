@@ -174,6 +174,10 @@ public class KeycloakService {
                 .add(
                         List.of(roleRepresentation)
                 );
+
+        if(!realmResource.users().get(userId).roles().realmLevel().listAll().contains(realmResource.roles().get(role.name().replace("_", "")).toRepresentation())) {
+            realmResource.users().get(userId).roles().realmLevel().add(List.of(realmResource.roles().get(role.name().replace("_", "")).toRepresentation()));
+        }
         return roleRepresentation;
     }
 
@@ -208,5 +212,18 @@ public class KeycloakService {
                         role.startsWith(GenericCompanyRole.LOGIST_.name()) ||
                         role.startsWith(GenericCompanyRole.DRIVER_.name()))
                 .toList();
+    }
+
+    public void userHasDriverRole(String userId, String companyName) {
+        String neededRole = GenericCompanyRole.DRIVER_.name() + companyName;
+        boolean result = realmResource.users()
+                .get(userId)
+                .roles()
+                .realmLevel()
+                .listAll()
+                .stream()
+                .map(RoleRepresentation::getName)
+                .anyMatch(role -> role.equals(neededRole));
+        if (!result) throw new AccessDeniedException();
     }
 }

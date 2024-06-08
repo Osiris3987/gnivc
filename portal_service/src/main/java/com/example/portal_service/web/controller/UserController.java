@@ -1,8 +1,12 @@
 package com.example.portal_service.web.controller;
 
+import com.example.gnivc_spring_boot_starter.UserContext;
+import com.example.portal_service.model.company.Company;
 import com.example.portal_service.model.user.User;
+import com.example.portal_service.service.CompanyService;
 import com.example.portal_service.service.KeycloakService;
 import com.example.portal_service.service.UserService;
+import com.example.portal_service.web.dto.user.CompanyDriverRequest;
 import com.example.portal_service.web.dto.user.UpdatePasswordRequest;
 import com.example.portal_service.web.dto.user.UserDto;
 import com.example.portal_service.web.dto.user.UserUpdateDto;
@@ -22,6 +26,8 @@ public class UserController {
     private final UserMapper userMapper;
     private final KeycloakService keycloakService;
     private final UserMapperMapstruct userMapperMapstruct;
+    private final CompanyService companyService;
+    private final UserContext userContext;
 
     @PostMapping
     public String createRegistratorUser(@RequestBody UserDto dto) {
@@ -49,5 +55,12 @@ public class UserController {
     @GetMapping("/roles")
     public List<String> getAllRoles() {
         return keycloakService.getAllCompanyRoles();
+    }
+
+    @PostMapping("/driver")
+    public UserDto getCompanyDriver(@RequestBody CompanyDriverRequest dto) {
+        User user = userService.findById(dto.getDriverId());
+        Company company = companyService.findById(dto.getCompanyId());
+        return userMapperMapstruct.toDto(userService.findCompanyDriver(user, company));
     }
 }
