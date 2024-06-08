@@ -1,4 +1,4 @@
-package com.example.driver_service.web.dto;
+package com.example.logist_sevice.web.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -10,5 +10,5 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 public class RaceAccessRequest {
-    private UUID companyId;
+    private UUID raceId;
 }

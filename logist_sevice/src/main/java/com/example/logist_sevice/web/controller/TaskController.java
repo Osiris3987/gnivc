@@ -4,11 +4,16 @@ import com.example.gnivc_spring_boot_starter.UserContext;
 import com.example.logist_sevice.config.feign.AuthorizationFeignClient;
 import com.example.logist_sevice.config.feign.TransportFeignClient;
 import com.example.logist_sevice.config.feign.UserFeignClient;
+import com.example.logist_sevice.model.exception.AccessDeniedException;
+import com.example.logist_sevice.model.race.Race;
 import com.example.logist_sevice.model.task.Task;
 import com.example.logist_sevice.service.RaceService;
 import com.example.logist_sevice.service.TaskService;
 import com.example.logist_sevice.web.dto.CompanyAccessRequest;
+import com.example.logist_sevice.web.dto.RaceAccessRequest;
+import com.example.logist_sevice.web.dto.race.RaceRequest;
 import com.example.logist_sevice.web.dto.race.RaceResponse;
+import com.example.logist_sevice.web.dto.race_event.RaceEventRequest;
 import com.example.logist_sevice.web.dto.task.TaskRequest;
 import com.example.logist_sevice.web.dto.task.TaskResponse;
 import com.example.logist_sevice.web.dto.transport.TransportResponse;
@@ -86,5 +91,20 @@ public class TaskController {
     ) {
         Task task = taskService.findTaskById(taskId);
         return raceMapper.toResponseListWithLatestEvents(raceService.findAllByTask(task, offset, limit));
+    }
+
+    @PostMapping("/raceAccess")
+    public void canAccessRace(@RequestBody RaceAccessRequest request) {
+        Race race = raceService.findById(request.getRaceId());
+        if (!race.getTask().getDriverId().equals(userContext.getUserId().toString())) {
+            throw new AccessDeniedException();
+        }
+    }
+    @PostMapping("/taskAccess")
+    public void canAccessTask(@RequestBody RaceRequest request) {
+        Task task = taskService.findTaskById(request.getTaskId());
+        if (!task.getDriverId().equals(userContext.getUserId().toString())) {
+            throw new AccessDeniedException();
+        }
     }
 }

@@ -6,8 +6,10 @@ import com.example.logist_sevice.model.race.RaceEvent;
 import com.example.logist_sevice.model.race.RaceEventType;
 import com.example.logist_sevice.model.task.Task;
 import com.example.logist_sevice.repository.RaceRepository;
+import com.example.logist_sevice.web.dto.race.RaceRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -41,6 +43,7 @@ public class RaceService {
     public Race update(Race race) {
         return raceRepository.save(race);
     }
+
 
     private RaceEvent assignRaceEventToNewRace() {
         RaceEvent raceEvent = new RaceEvent();
