@@ -30,6 +30,7 @@ public class SecurityConfig {
                                 .pathMatchers("/portal/**").permitAll()
                                 .pathMatchers("/logist/**").hasAuthority("LOGIST")
                                 .pathMatchers("/openid-connect/**").permitAll()
+                                .pathMatchers("/driver/**").hasAuthority("DRIVER")
                 )
                 .oauth2ResourceServer(resourceServerConfigurer -> resourceServerConfigurer
                         .authenticationManagerResolver(context -> Mono.just(provider)))
