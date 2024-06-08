@@ -21,7 +21,8 @@ public abstract class UserMapperMapstruct {
     ) {
         return updater.updateUserRepresentation(userRepresentation, dtoForUpdate);
     }
-
+    @Mapping(source = "user.firstName", target = "firstName")
+    @Mapping(source = "user.lastName", target = "lastName")
     public abstract UserDto toDto(User user);
 
 
