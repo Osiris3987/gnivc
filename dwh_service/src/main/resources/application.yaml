@@ -8,3 +8,5 @@ eureka:
 spring:
   application:
     name: dwh-service
+  kafka:
+    bootstrap-servers: localhost:29092

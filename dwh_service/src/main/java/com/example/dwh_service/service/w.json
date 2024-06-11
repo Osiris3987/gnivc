@@ -1,0 +1,67 @@
+{
+  "schema": {
+    "type": "struct",
+    "fields": [
+      {
+        "type": "string",
+        "optional": false,
+        "field": "id"
+      },
+      {
+        "type": "string",
+        "optional": false,
+        "field": "start_point"
+      },
+      {
+        "type": "string",
+        "optional": false,
+        "field": "end_point"
+      },
+      {
+        "type": "string",
+        "optional": false,
+        "field": "driver_first_name"
+      },
+      {
+        "type": "string",
+        "optional": false,
+        "field": "driver_last_name"
+      },
+      {
+        "type": "string",
+        "optional": false,
+        "field": "description"
+      },
+      {
+        "type": "string",
+        "optional": false,
+        "field": "transport_state_number"
+      },
+      {
+        "type": "string",
+        "optional": false,
+        "default": "b24842d4-91ae-463b-ac83-50179208d04e",
+        "field": "company_id"
+      },
+      {
+        "type": "string",
+        "optional": false,
+        "default": "2a1a58df-787e-4522-a0b9-5966f2d2fb1f",
+        "field": "driver_id"
+      }
+    ],
+    "optional": false,
+    "name": "pg-replica.public.tasks.Value"
+  },
+  "payload": {
+    "id": "8cab67e1-7e21-42ba-9608-d23e0acb5368",
+    "start_point": "228",
+    "end_point": "337",
+    "driver_first_name": "Oleg",
+    "driver_last_name": "Driver",
+    "description": "production code",
+    "transport_state_number": "x100xx",
+    "company_id": "b24842d4-91ae-463b-ac83-50179208d04e",
+    "driver_id": "2a1a58df-787e-4522-a0b9-5966f2d2fb1f"
+  }
+}
