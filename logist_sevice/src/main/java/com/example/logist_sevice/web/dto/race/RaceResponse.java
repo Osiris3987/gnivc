@@ -11,11 +11,11 @@ public class RaceResponse {
 
     private UUID id;
 
-    private LocalDateTime createdAt;
+    private String createdAt;
 
-    private LocalDateTime startedAt;
+    private String startedAt;
 
-    private LocalDateTime endedAt;
+    private String endedAt;
 
     private UUID taskId;
 

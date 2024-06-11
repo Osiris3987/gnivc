@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.UUID;
 
@@ -26,6 +27,7 @@ import java.util.UUID;
 public class RaceKafkaConsumer {
     private final RaceRepository raceRepository;
     private final TaskService taskService;
+    private final DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
     @KafkaListener(topics = "race_topic", groupId = "logist_service_race_events")
     @Transactional
@@ -35,7 +37,7 @@ public class RaceKafkaConsumer {
         Task task = taskService.findTaskById(request.getTaskId());
         Race race = new Race();
         race.setTask(task);
-        race.setCreatedAt(LocalDateTime.now());
+        race.setCreatedAt(dtf.format(LocalDateTime.now()));
         race.setRaceEvents(List.of(assignRaceEventToNewRace()));
         race.setTask(task);
         raceRepository.save(race);
@@ -44,7 +46,7 @@ public class RaceKafkaConsumer {
     private RaceEvent assignRaceEventToNewRace() {
         RaceEvent raceEvent = new RaceEvent();
         raceEvent.setEventType(RaceEventType.CREATED);
-        raceEvent.setCreatedAt(LocalDateTime.now());
+        raceEvent.setCreatedAt(dtf.format(LocalDateTime.now()));
         return raceEvent;
     }
 }

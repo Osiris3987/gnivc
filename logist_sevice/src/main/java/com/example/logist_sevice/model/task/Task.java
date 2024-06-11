@@ -3,9 +3,13 @@ package com.example.logist_sevice.model.task;
 import com.example.logist_sevice.model.race.Race;
 import jakarta.persistence.*;
 import lombok.Data;
+import org.apache.kafka.common.protocol.types.Field;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
 
+import java.sql.Timestamp;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -21,6 +25,9 @@ public class Task {
 
     @Column(name = "start_point")
     private String startPoint;
+
+    @Column(name = "created_at")
+    private String createdAt;
 
     @Column(name = "end_point")
     private String endPoint;

@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.UUID;
 
@@ -21,10 +22,11 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class RaceService {
     private final RaceRepository raceRepository;
+    private final DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
     @Transactional
     public Race create(Race race) {
-        race.setCreatedAt(LocalDateTime.now());
+        race.setCreatedAt(dtf.format(LocalDateTime.now()));
         race.setRaceEvents(List.of(assignRaceEventToNewRace()));
         return raceRepository.save(race);
     }
@@ -48,7 +50,7 @@ public class RaceService {
     private RaceEvent assignRaceEventToNewRace() {
         RaceEvent raceEvent = new RaceEvent();
         raceEvent.setEventType(RaceEventType.CREATED);
-        raceEvent.setCreatedAt(LocalDateTime.now());
+        raceEvent.setCreatedAt(dtf.format(LocalDateTime.now()));
         return raceEvent;
     }
 }

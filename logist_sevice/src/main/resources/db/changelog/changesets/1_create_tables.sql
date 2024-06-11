@@ -17,9 +17,9 @@ create table tasks
 create table races
 (
     id varchar(36) primary key,
-    created_at timestamp not null,
-    started_at timestamp,
-    ended_at timestamp,
+    created_at varchar not null,
+    started_at varchar,
+    ended_at varchar,
     task_id varchar(36) not null,
     constraint fk_races_tasks foreign key (task_id) references tasks (id)
 );
