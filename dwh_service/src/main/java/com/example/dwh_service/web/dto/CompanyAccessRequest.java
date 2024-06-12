@@ -1,4 +1,4 @@
-package com.example.portal_service.web.dto.company;
+package com.example.dwh_service.web.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
