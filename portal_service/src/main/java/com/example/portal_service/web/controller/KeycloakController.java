@@ -24,4 +24,11 @@ public class KeycloakController {
         keycloakService.userHasCurrentRole(List.of(GenericCompanyRole.DRIVER_ + company.getName(),
                 GenericCompanyRole.LOGIST_.name() + company.getName()));
     }
+
+    @PostMapping("/dwhAccess")
+    public void canAccessDwh(@RequestBody CompanyAccessRequest request) {
+        Company company = companyService.findById(request.getCompanyId());
+        keycloakService.userHasCurrentRole(List.of(GenericCompanyRole.ADMIN_.name() + company.getName(),
+                GenericCompanyRole.LOGIST_.name() + company.getName()));
+    }
 }
