@@ -38,6 +38,12 @@ spring:
             - Path=/driver/**
           filters:
             - RewritePath=/driver,/api/v1
+        - id: dwh
+          uri: http://localhost:8085
+          predicates:
+            - Path=/dwh/**
+          filters:
+            - RewritePath=/dwh,/api/v1
 
       default-filters:
         - DedupeResponseHeader=Access-Control-Allow-Origin, RETAIN_LAST
