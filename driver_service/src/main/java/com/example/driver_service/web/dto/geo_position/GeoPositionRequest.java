@@ -1,4 +1,4 @@
-package com.example.logist_sevice.web.dto.geo_position;
+package com.example.driver_service.web.dto.geo_position;
 
 import lombok.Data;
 

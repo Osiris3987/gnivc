@@ -1,6 +1,6 @@
-package com.example.logist_sevice.web.dto.race_event;
+package com.example.driver_service.web.dto.race_event;
 
-import com.example.logist_sevice.model.race.RaceEventType;
+import com.example.driver_service.web.dto.RaceEventType;
 import lombok.Data;
 
 
@@ -8,5 +8,7 @@ import lombok.Data;
 public class RaceEventRequest {
 
     private RaceEventType eventType;
+
     private String raceId;
+
 }

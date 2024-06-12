@@ -74,7 +74,19 @@
             <artifactId>spring-cloud-starter-openfeign</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>gnivc-spring-boot-starter</groupId>
+            <artifactId>gnivc-spring-boot-starter</artifactId>
+            <version>0.0.2-SNAPSHOT</version>
+            <scope>system</scope>
+            <systemPath>${basedir}/common/gnivc-spring-boot-starter-0.0.2-SNAPSHOT.jar</systemPath>
+        </dependency>
 
+        <dependency>
+            <groupId>com.example</groupId>
+            <artifactId>gnivc-spring-boot-starter</artifactId>
+            <version>0.0.2-SNAPSHOT</version>
+        </dependency>
     </dependencies>
     <dependencyManagement>
         <dependencies>

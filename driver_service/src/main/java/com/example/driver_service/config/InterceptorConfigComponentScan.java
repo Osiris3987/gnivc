@@ -1,4 +1,4 @@
-package com.example.logist_sevice.config;
+package com.example.driver_service.config;
 
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;

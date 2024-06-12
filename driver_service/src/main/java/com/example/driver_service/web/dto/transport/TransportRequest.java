@@ -1,4 +1,4 @@
-package com.example.logist_sevice.web.dto.transport;
+package com.example.driver_service.web.dto.transport;
 
 import lombok.Data;
 

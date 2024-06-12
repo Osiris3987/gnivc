@@ -1,6 +1,6 @@
-package com.example.logist_sevice.config.feign;
+package com.example.driver_service.config.feign;
 
-import com.example.logist_sevice.web.dto.CompanyAccessRequest;
+import com.example.driver_service.web.dto.CompanyAccessRequest;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;

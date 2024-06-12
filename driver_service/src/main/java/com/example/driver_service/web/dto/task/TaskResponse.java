@@ -1,4 +1,4 @@
-package com.example.logist_sevice.web.dto.task;
+package com.example.driver_service.web.dto.task;
 
 import lombok.Data;
 
