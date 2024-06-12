@@ -1,6 +1,6 @@
-package com.example.logist_sevice.web.dto.race;
+package com.example.driver_service.web.dto.race;
 
-import com.example.logist_sevice.web.dto.race_event.RaceEventResponse;
+import com.example.driver_service.web.dto.race_event.RaceEventResponse;
 import lombok.Data;
 
 import java.time.LocalDateTime;

@@ -12,5 +12,5 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class RaceEventResponse {
     private RaceEventType eventType;
-    private LocalDateTime createdAt;
+    private String createdAt;
 }

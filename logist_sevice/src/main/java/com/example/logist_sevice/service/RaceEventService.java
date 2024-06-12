@@ -3,6 +3,7 @@ package com.example.logist_sevice.service;
 import com.example.logist_sevice.model.race.Race;
 import com.example.logist_sevice.model.race.RaceEvent;
 import com.example.logist_sevice.model.race.RaceEventType;
+import com.example.logist_sevice.repository.RaceRepository;
 import com.example.logist_sevice.web.dto.race_event.RaceEventRequest;
 import com.google.gson.Gson;
 import lombok.RequiredArgsConstructor;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.UUID;
 
 @Service
@@ -19,6 +21,8 @@ import java.util.UUID;
 public class RaceEventService {
 
     private final RaceService raceService;
+    private final DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+    private final RaceRepository raceRepository;
 
     @KafkaListener(topics = "race_event_topic", groupId = "logist_service_race_events")
     @SneakyThrows
@@ -30,15 +34,18 @@ public class RaceEventService {
         checkStartOrEndRaceEvent(raceEventRequest.getEventType(), race);
         RaceEvent raceEventEntity = new RaceEvent();
         raceEventEntity.setEventType(raceEventRequest.getEventType());
-        raceEventEntity.setCreatedAt(LocalDateTime.now());
-        race.getRaceEvents().add(raceEventEntity);
-        raceService.update(race);
+        raceEventEntity.setCreatedAt(dtf.format(LocalDateTime.now()));
+        raceRepository.createRaceEvent(raceEventEntity.getEventType().name(), raceEventEntity.getCreatedAt(), race.getId().toString());
     }
 
     private void checkStartOrEndRaceEvent(RaceEventType eventType, Race race) {
         switch (eventType) {
-            case STARTED -> race.setStartedAt(LocalDateTime.now());
-            case COMPLETED -> race.setEndedAt(LocalDateTime.now());
+            case STARTED -> {
+                raceRepository.setStartTime(race.getId(), dtf.format(LocalDateTime.now()));
+            }
+            case COMPLETED -> {
+                raceRepository.setEndTime(race.getId(), dtf.format(LocalDateTime.now()));
+            }
         }
     }
 

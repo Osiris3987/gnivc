@@ -1,6 +1,6 @@
-package com.example.logist_sevice.web.dto.task;
-import com.example.logist_sevice.web.dto.transport.TransportRequest;
-import com.example.logist_sevice.web.dto.user.CompanyDriverRequest;
+package com.example.driver_service.web.dto.task;
+import com.example.driver_service.web.dto.transport.TransportRequest;
+import com.example.driver_service.web.dto.user.CompanyDriverRequest;
 import lombok.Data;
 
 @Data

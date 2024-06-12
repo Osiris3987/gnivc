@@ -21,13 +21,13 @@ public class Race {
     private UUID id;
 
     @Column(name = "created_at")
-    private LocalDateTime createdAt;
+    private String createdAt;
 
     @Column(name = "started_at")
-    private LocalDateTime startedAt;
+    private String startedAt;
 
     @Column(name = "ended_at")
-    private LocalDateTime endedAt;
+    private String endedAt;
 
     @ManyToOne
     @JoinColumn(name = "task_id")

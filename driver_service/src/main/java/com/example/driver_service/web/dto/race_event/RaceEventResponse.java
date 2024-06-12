@@ -1,6 +1,6 @@
-package com.example.logist_sevice.web.dto.race_event;
+package com.example.driver_service.web.dto.race_event;
 
-import com.example.logist_sevice.model.race.RaceEventType;
+import com.example.driver_service.web.dto.RaceEventType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

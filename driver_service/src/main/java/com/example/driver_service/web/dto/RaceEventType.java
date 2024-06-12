@@ -1,4 +1,4 @@
-package com.example.logist_sevice.model.race;
+package com.example.driver_service.web.dto;
 
 public enum RaceEventType {
     STARTED,

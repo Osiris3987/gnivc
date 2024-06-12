@@ -1,4 +1,4 @@
-package com.example.logist_sevice.web.dto.user;
+package com.example.driver_service.web.dto.user;
 
 import lombok.Data;
 

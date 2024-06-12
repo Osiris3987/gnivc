@@ -18,13 +18,38 @@
         <spring-cloud.version>2022.0.4</spring-cloud.version>
     </properties>
     <dependencies>
+
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
+
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+            <version>2.10.1</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <optional>true</optional>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.kafka</groupId>
+            <artifactId>spring-kafka</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-configuration-processor</artifactId>
+            <optional>true</optional>
         </dependency>
 
         <dependency>
@@ -32,6 +57,33 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
+
+        <dependency>
+            <groupId>com.clickhouse</groupId>
+            <artifactId>clickhouse-jdbc</artifactId>
+            <version>0.6.0-patch5</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-openfeign</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>gnivc-spring-boot-starter</groupId>
+            <artifactId>gnivc-spring-boot-starter</artifactId>
+            <version>0.0.2-SNAPSHOT</version>
+            <scope>system</scope>
+            <systemPath>${basedir}/common/gnivc-spring-boot-starter-0.0.2-SNAPSHOT.jar</systemPath>
+        </dependency>
+
+
+        <dependency>
+            <groupId>com.example</groupId>
+            <artifactId>gnivc-spring-boot-starter</artifactId>
+            <version>0.0.2-SNAPSHOT</version>
+        </dependency>
+
     </dependencies>
     <dependencyManagement>
         <dependencies>

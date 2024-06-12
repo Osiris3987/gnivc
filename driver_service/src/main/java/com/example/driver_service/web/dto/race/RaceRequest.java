@@ -1,4 +1,4 @@
-package com.example.logist_sevice.web.dto.race;
+package com.example.driver_service.web.dto.race;
 
 import lombok.Data;
 
