@@ -27,7 +27,7 @@ public class TaskService {
     @Transactional
     public Task create(Task task) {
         LocalDateTime localDateTime = LocalDateTime.now();
-        task.setCreatedAt(dtf.format(localDateTime));
+        task.setCreatedAt(LocalDateTime.now());
         return taskRepository.save(task);
     }
 

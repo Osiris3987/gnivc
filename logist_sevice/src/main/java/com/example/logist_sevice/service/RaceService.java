@@ -26,7 +26,7 @@ public class RaceService {
 
     @Transactional
     public Race create(Race race) {
-        race.setCreatedAt(dtf.format(LocalDateTime.now()));
+        race.setCreatedAt(LocalDateTime.now());
         race.setRaceEvents(List.of(assignRaceEventToNewRace()));
         return raceRepository.save(race);
     }
@@ -50,7 +50,7 @@ public class RaceService {
     private RaceEvent assignRaceEventToNewRace() {
         RaceEvent raceEvent = new RaceEvent();
         raceEvent.setEventType(RaceEventType.CREATED);
-        raceEvent.setCreatedAt(dtf.format(LocalDateTime.now()));
+        raceEvent.setCreatedAt(LocalDateTime.now());
         return raceEvent;
     }
 }

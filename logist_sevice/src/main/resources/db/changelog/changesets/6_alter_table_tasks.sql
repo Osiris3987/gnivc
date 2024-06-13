@@ -1,2 +1,2 @@
 ALTER TABLE tasks
-ADD column created_at varchar
+ADD column created_at timestamp

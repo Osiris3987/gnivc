@@ -12,7 +12,7 @@ import java.util.UUID;
 
 @Entity
 @Data
-@Table(name = "races")
+@Table(name = "races_l")
 public class Race {
 
     @Id
@@ -21,13 +21,13 @@ public class Race {
     private UUID id;
 
     @Column(name = "created_at")
-    private String createdAt;
+    private LocalDateTime createdAt;
 
     @Column(name = "started_at")
-    private String startedAt;
+    private LocalDateTime startedAt;
 
     @Column(name = "ended_at")
-    private String endedAt;
+    private LocalDateTime endedAt;
 
     @ManyToOne
     @JoinColumn(name = "task_id")

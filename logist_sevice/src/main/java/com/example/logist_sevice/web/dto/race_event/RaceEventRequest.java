@@ -8,5 +8,8 @@ import lombok.Data;
 public class RaceEventRequest {
 
     private RaceEventType eventType;
+
     private String raceId;
+
+    private String image;
 }

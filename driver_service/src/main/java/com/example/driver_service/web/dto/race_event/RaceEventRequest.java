@@ -11,4 +11,6 @@ public class RaceEventRequest {
 
     private String raceId;
 
+    private String image;
+
 }

@@ -5,3 +5,5 @@ FROM races_view as rv
 WHERE rev.event_type = 'COMPLETED'
   AND tv.company_id = 'b24842d4-91ae-463b-ac83-50179208d04e'
   AND rev.created_at BETWEEN '2024-06-10 13:59:27' AND '2024-06-13 15:59:20';
+
+SELECT * FROM test_time_view;
