@@ -1,5 +1,5 @@
 {
-  "name": "pg-connector-race-event",
+  "name": "pg-connector-test",
   "config": {
     "connector.class": "io.debezium.connector.postgresql.PostgresConnector",
     "plugin.name": "pgoutput",
@@ -11,7 +11,7 @@
     "database.password": "postgres1",
     "database.dbname": "logist_db",
     "database.server.id": "184054",
-    "table.include.list": "public.races",
+    "table.include.list": "public.test",
     "schema.history.internal.kafka.bootstrap.servers": "kafka:9092",
     "transforms": "unwrap,route",
     "transforms.unwrap.type": "io.debezium.transforms.ExtractNewRecordState",
@@ -22,8 +22,6 @@
     "value.converter": "org.apache.kafka.connect.json.JsonConverter",
     "key.converter.schemas.enable": "false",
     "value.converter.schemas.enable": "false",
-    "slot.name" : "race_event",
-    "column.exclude.list": "public.races.started_at, public.races.ended_at",
-    "skip.messages.without.change": "true"
+    "slot.name" : "test_connect"
   }
 }

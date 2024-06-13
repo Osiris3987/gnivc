@@ -6,6 +6,7 @@ import com.example.logist_sevice.model.race.RaceEvent;
 import com.example.logist_sevice.model.race.RaceEventType;
 import com.example.logist_sevice.model.task.Task;
 import org.apache.kafka.common.protocol.types.Field;
+import org.springframework.cglib.core.Local;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -13,6 +14,9 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -32,15 +36,19 @@ public interface RaceRepository extends JpaRepository<Race, UUID> {
 
     @Transactional
     @Modifying
-    @Query(value = "INSERT INTO race_events (event_type, created_at, race_id) VALUES (:eventType, :createdAt, :raceId)", nativeQuery = true)
-    void createRaceEvent(@Param("eventType") String eventType, @Param("createdAt") String createdAt, @Param("raceId") String raceId);
+    @Query(value = "INSERT INTO race_events (event_type, created_at, race_id, image) VALUES (:eventType, :createdAt, :raceId, :image)", nativeQuery = true)
+    void createRaceEvent(@Param("eventType") String eventType,
+                         @Param("createdAt") LocalDateTime createdAt,
+                         @Param("raceId") String raceId,
+                         @Param("image") String image
+    );
 
     @Modifying
     @Query("UPDATE Race r SET r.startedAt = :newStartTime WHERE r.id = :raceId")
-    void setStartTime(@Param("raceId") UUID raceId, @Param("newStartTime") String newStartTime);
+    void setStartTime(@Param("raceId") UUID raceId, @Param("newStartTime") LocalDateTime newStartTime);
 
     // Метод для установки времени окончания гонки
     @Modifying
     @Query("UPDATE Race r SET r.endedAt = :newEndTime WHERE r.id = :raceId")
-    void setEndTime(@Param("raceId") UUID raceId, @Param("newEndTime") String newEndTime);
+    void setEndTime(@Param("raceId") UUID raceId, @Param("newEndTime") LocalDateTime newEndTime);
 }

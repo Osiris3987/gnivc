@@ -14,5 +14,8 @@ public class RaceEvent {
     private RaceEventType eventType;
 
     @Column(name = "created_at")
-    private String createdAt;
+    private LocalDateTime createdAt;
+
+    @Column(name = "image")
+    private String image;
 }

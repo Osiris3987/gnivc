@@ -27,7 +27,7 @@ public class Task {
     private String startPoint;
 
     @Column(name = "created_at")
-    private String createdAt;
+    private LocalDateTime createdAt;
 
     @Column(name = "end_point")
     private String endPoint;
@@ -51,7 +51,7 @@ public class Task {
     private String companyId;
 
     @OneToMany
-    @JoinTable(name = "races",
+    @JoinTable(name = "races_l",
             inverseJoinColumns = @JoinColumn(name = "id")
     )
     private List<Race> races;

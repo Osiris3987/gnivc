@@ -25,7 +25,7 @@ public abstract class RaceMapper {
             RaceEvent latestEvent = race.getRaceEvents().stream()
                     .max(Comparator.comparing(RaceEvent::getCreatedAt)).get();
             RaceResponse raceResponse = toResponse(race);
-            raceResponse.setLatestEvent(new RaceEventResponse(latestEvent.getEventType(), latestEvent.getCreatedAt()));
+            raceResponse.setLatestEvent(new RaceEventResponse(latestEvent.getEventType(), latestEvent.getCreatedAt().toString()));
             return raceResponse;
         }).toList();
     }

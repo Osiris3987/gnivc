@@ -37,7 +37,7 @@ public class RaceKafkaConsumer {
         Task task = taskService.findTaskById(request.getTaskId());
         Race race = new Race();
         race.setTask(task);
-        race.setCreatedAt(dtf.format(LocalDateTime.now()));
+        race.setCreatedAt(LocalDateTime.now());
         race.setRaceEvents(List.of(assignRaceEventToNewRace()));
         race.setTask(task);
         raceRepository.save(race);
@@ -46,7 +46,7 @@ public class RaceKafkaConsumer {
     private RaceEvent assignRaceEventToNewRace() {
         RaceEvent raceEvent = new RaceEvent();
         raceEvent.setEventType(RaceEventType.CREATED);
-        raceEvent.setCreatedAt(dtf.format(LocalDateTime.now()));
+        raceEvent.setCreatedAt(LocalDateTime.now());
         return raceEvent;
     }
 }

@@ -12,7 +12,10 @@ import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.util.UUID;
 
@@ -34,17 +37,23 @@ public class RaceEventService {
         checkStartOrEndRaceEvent(raceEventRequest.getEventType(), race);
         RaceEvent raceEventEntity = new RaceEvent();
         raceEventEntity.setEventType(raceEventRequest.getEventType());
-        raceEventEntity.setCreatedAt(dtf.format(LocalDateTime.now()));
-        raceRepository.createRaceEvent(raceEventEntity.getEventType().name(), raceEventEntity.getCreatedAt(), race.getId().toString());
+        raceEventEntity.setCreatedAt(LocalDateTime.now());
+
+        raceRepository.createRaceEvent(
+                raceEventEntity.getEventType().name(),
+                raceEventEntity.getCreatedAt(),
+                race.getId().toString(),
+                raceEventRequest.getImage() == null ? null : raceEventRequest.getImage()
+        );
     }
 
     private void checkStartOrEndRaceEvent(RaceEventType eventType, Race race) {
         switch (eventType) {
             case STARTED -> {
-                raceRepository.setStartTime(race.getId(), dtf.format(LocalDateTime.now()));
+                raceRepository.setStartTime(race.getId(), LocalDateTime.now());
             }
             case COMPLETED -> {
-                raceRepository.setEndTime(race.getId(), dtf.format(LocalDateTime.now()));
+                raceRepository.setEndTime(race.getId(), LocalDateTime.now());
             }
         }
     }
