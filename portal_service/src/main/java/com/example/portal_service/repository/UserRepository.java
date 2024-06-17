@@ -8,6 +8,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 public interface UserRepository extends JpaRepository<User, UUID> {
@@ -22,4 +23,7 @@ public interface UserRepository extends JpaRepository<User, UUID> {
             "JOIN companies_users cu ON u.id = cu.user_id\n" +
             "WHERE cu.company_id = :companyId", nativeQuery = true)
     List<User> findAllUsersIdByCompanyId(@Param("companyId") String companyId);
+
+    Optional<User> findByEmail(String email);
+    Boolean existsByEmail(String email);
 }

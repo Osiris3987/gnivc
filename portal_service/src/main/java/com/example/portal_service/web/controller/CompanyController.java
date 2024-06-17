@@ -47,6 +47,17 @@ public class CompanyController {
                 dto.getCompanyName()
                 );
     }
+
+    @PostMapping("/assign/any")
+    public void assignAnyUserToCompany(@RequestBody AssignUnregisteredUserToCompanyRequest dto) {
+        companyService.assignAnyUser(
+                dto.getRole(),
+                userMapper.toRepresentation(dto.getUser()),
+                userMapper.toEntity(dto.getUser()),
+                dto.getCompanyName()
+        );
+    }
+
     @GetMapping("/{id}")
     public CompanyWithUsersResponse getCompanyWithUsers(@PathVariable UUID id) {
         CompanyWithUsersResponse response = companyMapper.toCompanyWithUsersResponse(companyService.findById(id));

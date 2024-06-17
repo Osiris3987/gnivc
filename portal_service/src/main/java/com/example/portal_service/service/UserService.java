@@ -78,6 +78,17 @@ public class UserService {
     }
 
     @Transactional(readOnly = true)
+    public User findByEmail(String email) {
+        return userRepository.findByEmail(email).orElseThrow(()
+                -> new ResourceNotFoundException("User not found"));
+    }
+
+    @Transactional(readOnly = true)
+    public boolean existsByEmail(String email) {
+        return userRepository.existsByEmail(email);
+    }
+
+    @Transactional(readOnly = true)
     public Map<String, Long> findUsersWithRoleCount(String companyId) {
         return keycloakService.getCompanyMembersAmountByRole(
                 userRepository.findAllUsersIdByCompanyId(companyId)

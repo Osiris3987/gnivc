@@ -19,5 +19,10 @@ public abstract class CompanyMapper {
 
     public abstract List<CompanyResponse> toCompanyResponse(List<Company> companies);
 
+    @Mapping(source = "response.value", target = "name")
+    @Mapping(source = "response.data.inn", target = "inn")
+    @Mapping(source = "response.data.ogrn", target = "ogrn")
+    @Mapping(source = "response.data.kpp", target = "kpp")
+    @Mapping(source = "response.data.address.value", target = "address")
     public abstract Company toCompany(DaDataResponse response);
 }
