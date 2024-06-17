@@ -123,4 +123,21 @@ public class CompanyService {
             throw e;
         }
     }
+
+    @Transactional
+    public void assignAnyUser(
+            GenericCompanyRole role,
+            UserRepresentation userRepresentation,
+            User user,
+            String companyName
+    ) {
+        if(userService.existsByEmail(user.getEmail())) {
+            User registeredUser = userService.findByEmail(user.getEmail());
+            assignRegisteredUserToCompany(new AssignRegisteredUserToCompanyRequest(
+                    role, registeredUser.getId().toString(),companyName)
+            );
+        } else {
+            assignUnregisteredUserToCompany(role, userRepresentation, user, companyName);
+        }
+    }
 }

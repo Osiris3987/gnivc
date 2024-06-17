@@ -45,13 +45,19 @@ public class ClickHouseJDBC implements AutoCloseable{
         LocalDateTime endOfPreviousDay = startOfCurrentDay.minusDays(1);
         String query =
                 """
-                        SELECT COUNT(DISTINCT rv.id)
-                        FROM races_view as rv
-                                 INNER JOIN race_events_view as rev ON rv.id = rev.race_id
-                                 INNER JOIN tasks_view as tv ON rv.task_id = tv.id
-                        WHERE rev.event_type = ?
-                          AND tv.company_id = ?
-                          AND rev.created_at BETWEEN ? AND ?;""";
+                        SELECT count()
+                        FROM races_view r
+                            JOIN race_events_view re ON r.id = re.race_id
+                            JOIN (
+                            SELECT re2.race_id, max(re2.created_at) as created_at
+                            FROM race_events_view re2
+                            GROUP BY re2.race_id
+                            ) b on b.created_at = re.created_at
+                            LEFT JOIN tasks_view as t ON r.task_id = t.id
+                            WHERE re.event_type = ?
+                             AND t.company_id = ?
+                              AND re.created_at BETWEEN ? AND ?;
+                """;
         int eventCount;
         try (PreparedStatement statement = conn.prepareStatement(query)) {
             statement.setString(1, eventType);
@@ -71,12 +77,6 @@ public class ClickHouseJDBC implements AutoCloseable{
     public void close() throws Exception {
         if (conn != null) {
             conn.close();
-        }
-    }
-
-    public static void main(String[] args) throws Exception {
-        try (ClickHouseJDBC demo = new ClickHouseJDBC()) {
-            System.out.println(demo.recentRaceEvents("CANCELED", "b24842d4-91ae-463b-ac83-50179208d04e"));
         }
     }
 }
